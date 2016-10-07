@@ -83,7 +83,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     #
     $script = <<SCRIPT
         sudo apt-add-repository ppa:ansible/ansible -y
-		
+		sudo apt-add-repository ppa:ondrej/php -y
         sudo apt-get update -y
 		sudo apt-get autoremove -y
 		sudo apt-get autoclean -y
