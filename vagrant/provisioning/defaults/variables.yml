@@ -1,0 +1,15 @@
+hostname: SymfonyBox
+
+mysql_root_user: root
+mysql_root_pass: root
+mysql_user: laravel
+mysql_pass: laravel
+mysql_db: projectdb
+mysql_bind_address: 0.0.0.0  # Allows all connections, for Production it should be 127.0.0.1
+mysql_key_buffer: 64M
+
+vhosts:
+  [
+    { name: 'laravel.dev', rootFolder: '/var/www/public'},
+    { name: 'phpmyadmin.dev', rootFolder: '/usr/share/phpmyadmin'} # do not change domain name. 
+  ]

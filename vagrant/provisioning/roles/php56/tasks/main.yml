@@ -1,0 +1,72 @@
+- name: ensure PHP installed
+  apt: pkg={{ item }} state=latest
+  with_items:
+    - php5-fpm
+    - php5-dev
+    - php5-cli
+    - php5-intl
+    - php5-json
+    - php5-pgsql
+    - php5-mysql
+    - php5-sqlite
+    - php5-curl
+    - php5-gd
+    - php5-mcrypt
+    - php5-xdebug
+    - php5-memcached
+    - php-apc
+  tags: php
+  
+- name: config apc
+  template: src=20-apc.ini dest=/etc/php5/fpm/conf.d/20-apc.ini
+  notify:
+    - restart phpfpm
+  tags: php
+  
+- name: config apc apache2
+  template: src=20-apc.ini dest=/etc/php5/apache2/conf.d/20-apc.ini
+  notify:
+    - restart phpfpm
+  tags: php  
+
+- name: enable php modules
+  shell: php5enmod {{ item }}
+  with_items:
+    - mcrypt
+  notify:
+    - restart phpfpm
+
+- name: configure PHP settings
+  template: src=php.ini dest=/etc/php5/fpm/conf.d/custom.ini
+  notify:
+    - restart phpfpm
+  tags: php
+  
+- name: configure PHP settings apache2
+  template: src=php.ini dest=/etc/php5/apache2/conf.d/custom.ini
+  notify:
+    - restart phpfpm
+  tags: php
+
+- name: configure PHP-FPM Pool settings
+  template: src=www-pool.conf dest=/etc/php5/fpm/pool.d/www.conf
+  notify:
+    - restart phpfpm
+  tags: php
+
+- name: chown PHP-FPM sessions dir
+  shell: chown vagrant:vagrant /var/lib/php5 -Rf
+  tags: php
+  
+- name: Check if Service Exists
+  shell: "if chkconfig --list | grep -q apache2;   then echo true;   else echo false; fi;"
+  register: apache2_exists
+
+#- name: enable FPM part 2
+#  shell: a2enconf php5-fpm
+#  become: true
+#  notify:
+#    - restart apache2
+#  tags: apache2
+#  when: apache2_exists
+  

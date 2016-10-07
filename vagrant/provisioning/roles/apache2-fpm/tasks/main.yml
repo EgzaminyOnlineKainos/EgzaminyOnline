@@ -1,0 +1,63 @@
+- name: Installing apache2
+  apt: pkg={{ item }} state=latest
+  with_items:
+    - apache2
+    - libapache2-mod-fastcgi
+  tags: apache2
+  
+- name: enabled mod_rewrite
+  apache2_module: name=rewrite state=present
+  notify:
+    - restart apache2
+    
+- name: configure Apache2 Virtual hosts
+  template: src=site.conf dest=/etc/apache2/sites-available/{{ item.name }}.conf
+  with_items: vhosts
+  notify:
+    - restart apache2
+  tags: apache2
+  
+- name: doing magic with phpmyadmin
+  template: src=site.conf.pma dest=/etc/apache2/sites-available/{{ item.name }}.conf
+  with_items: vhosts
+  when: item.name == "phpmyadmin.dev"
+  notify:
+    - restart apache2
+  tags: apache2  
+  
+- name: disable default site
+  file: path=/etc/apache2/sites-enabled/000-default state=absent
+  notify:
+    - restart apache2
+
+- name: enable created sites
+  file: src=/etc/apache2/sites-available/{{ item.name }}.conf dest=/etc/apache2/sites-enabled/{{ item.name }}.conf state=link
+  with_items: vhosts
+  notify:
+    - restart apache2
+ 
+- name: enable FPM 1
+  apache2_module: state=present name=actions
+  become: true
+  notify:
+    - restart apache2
+  tags: apache2 
+- name: enable FPM 2 
+  apache2_module: state=present name=fastcgi
+  become: true
+  notify:
+    - restart apache2
+  tags: apache2 
+- name: enable FPM 3
+  apache2_module: state=present name=alias
+  become: true
+  notify:
+    - restart apache2
+  tags: apache2
+  
+- name: create php5-fpm config
+  copy: src=/vagrant/provisioning/roles/apache2/templates/php5-fpm.conf dest=/etc/apache2/conf-available/php5-fpm.conf
+  become: true
+  notify:
+    - restart apache2
+  tags: apache2
