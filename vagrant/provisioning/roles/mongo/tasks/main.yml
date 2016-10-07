@@ -1,0 +1,52 @@
+---
+- name: install add-apt-repository binary for Ansible to work
+  apt: name={{ item }} state=present update_cache=yes
+  with_items:
+    - python-software-properties
+    - apt-transport-https
+- name: Create /data directory
+  file: path=/data state=directory
+- name: Create /data/db directory
+  file: path=/data/db state=directory
+  
+- name: Ensure directories are 0755
+  command: find /data -type d -exec chmod 0755 {} \;
+
+- name: add MongoDB public GPG key
+  apt_key: url=https://docs.mongodb.org/10gen-gpg-key.asc id=7F0CEB10 state=present validate_certs=False
+
+- name: add MongoDB stable repository (for Ubuntu)
+  apt_repository: repo='deb http://repo.mongodb.org/apt/ubuntu  trusty/mongodb-org/3.2 multiverse' state=present
+
+- name: run the equivalent of "apt-get update" as a separate step
+  apt: update_cache=yes
+  
+- name: create mongod system service
+  copy: src=/vagrant/provisioning/roles/mongo/templates/mongod.service dest=/lib/systemd/system/mongod.service
+  become: true
+  tags: phpfpm
+  
+- name: create mongodb PHP config
+  copy: src=/vagrant/provisioning/roles/mongo/templates/20-mongo.ini dest=/etc/php/7.0/mods-available/20-mongo.ini
+  become: true
+  tags: phpfpm
+
+- name: enable mongodb PHP config
+  shell: phpenmod mongodb
+  become: true
+  tags: phpfpm
+  notify: restart phpfpm
+
+- name: install MongoDB with default version
+  apt: name=mongodb-org  state=present force=yes
+  notify: restart mongod
+  
+- name: install PHP PECL mongodb
+  pear: name=pecl/mongodb state=present
+  become: true
+  
+- name: enable mongodb PHP ext
+  shell: echo "extension=mongodb.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
+  become: true
+  
+
