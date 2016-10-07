@@ -12,5 +12,13 @@
     - python-mysqldb
     - python-psycopg2
     - unzip
+    - autoconf
+    - g++
+    - make
+    - openssl
+    - libssl-dev
+    - libcurl4-openssl-dev
+    - pkg-config
+    - libsasl2-dev
 
 - include: ntp.yml

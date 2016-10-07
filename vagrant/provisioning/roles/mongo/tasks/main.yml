@@ -24,10 +24,29 @@
 - name: create mongod system service
   copy: src=/vagrant/provisioning/roles/mongo/templates/mongod.service dest=/lib/systemd/system/mongod.service
   become: true
-  tags: mongod
+  tags: phpfpm
+  
+- name: create mongodb PHP config
+  copy: src=/vagrant/provisioning/roles/mongo/templates/20-mongo.ini dest=/etc/php/7.0/mods-available/20-mongo.ini
+  become: true
+  tags: phpfpm
+
+- name: enable mongodb PHP config
+  shell: phpenmod mongodb
+  become: true
+  tags: phpfpm
+  notify: restart phpfpm
 
 - name: install MongoDB with default version
   apt: name=mongodb-org  state=present force=yes
   notify: restart mongod
+  
+- name: install PHP PECL mongodb
+  pear: name=pecl/mongodb state=present
+  become: true
+  
+- name: enable mongodb PHP ext
+  shell: echo "extension=mongodb.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
+  become: true
   
 
