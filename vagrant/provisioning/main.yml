@@ -21,3 +21,4 @@
     - phpmyadmin
     - project-db
     - phpunit
+    - mongo
