@@ -20,5 +20,7 @@
     - libcurl4-openssl-dev
     - pkg-config
     - libsasl2-dev
+    - python-pip
+    - python-dev
 
 - include: ntp.yml

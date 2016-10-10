@@ -9,7 +9,7 @@ User=mongodb
 Group=mongodb
 RuntimeDirectory=mongod
 PIDFile=/var/run/mongod/mongod.pid
-ExecStart=/usr/bin/mongod -f /etc/mongod.conf --pidfilepath /var/run/mongod/mongod.pid --fork
+ExecStart=/usr/bin/mongod --auth -f /etc/mongod.conf --pidfilepath /var/run/mongod/mongod.pid --fork
 TimeoutStopSec=5
 KillMode=mixed
 
