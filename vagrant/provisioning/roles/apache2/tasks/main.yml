@@ -9,17 +9,18 @@
   apache2_module: name=rewrite state=present
   notify:
     - restart apache2
-    
-- name: disable php5
-  apache2_module: name=php5 state=absent
-  notify:
-    - restart apache2    
-    
+
 - name: enabled php7.0
   apache2_module: name=php7.0 state=present
   notify:
     - restart apache2
-   
+  become: true 
+    
+- name: disable php5
+  apache2_module: name=php5 state=absent
+  notify:
+    - restart apache2 
+  become: true   
     
 - name: configure Apache2 Virtual hosts
   template: src=site.conf dest=/etc/apache2/sites-available/{{ item.name }}.conf

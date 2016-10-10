@@ -21,11 +21,6 @@
 - name: run the equivalent of "apt-get update" as a separate step
   apt: update_cache=yes
   
-- name: create mongod system service
-  copy: src=/vagrant/provisioning/roles/mongo/templates/mongod.service dest=/lib/systemd/system/mongod.service
-  become: true
-  tags: phpfpm
-  
 - name: create mongodb PHP config
   copy: src=/vagrant/provisioning/roles/mongo/templates/20-mongo.ini dest=/etc/php/7.0/mods-available/20-mongo.ini
   become: true
@@ -49,4 +44,16 @@
   shell: echo "extension=mongodb.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
   become: true
   
+- name: create mongod system service
+  copy: src=/vagrant/provisioning/roles/mongo/templates/mongod.service dest=/lib/systemd/system/mongod.service
+  become: true
+  tags: phpfpm
+  
+- name: pip install pymongo
+  pip: name=pymongo
+  become: true
+  
+- name: create mongo data
+  mongodb_user: database=projectdb name=laravel password=laravel roles='dbAdmin,readWriteAnyDatabase' state=present
+  become: true
 
