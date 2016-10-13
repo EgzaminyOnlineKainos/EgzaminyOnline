@@ -17,7 +17,7 @@ end
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # Every Vagrant virtual environment requires a box to build off of.
-    config.vm.box = "ubuntu/wily64"
+    config.vm.box = "bento/ubuntu-16.04"
 
     # The url from where the 'config.vm.box' box will be fetched if it
     # doesn't already exist on the user's system.
@@ -84,7 +84,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     $script = <<SCRIPT
         sudo apt-add-repository ppa:ansible/ansible -y
 		sudo apt-add-repository ppa:ondrej/php -y
-        sudo apt-get update -y
+		sudo apt-get update -y
 		sudo apt-get autoremove -y
 		sudo apt-get autoclean -y
 		sudo fallocate -l 512M /swapfile
