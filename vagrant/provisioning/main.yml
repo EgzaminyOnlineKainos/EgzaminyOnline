@@ -11,13 +11,12 @@
     - initial
     - common
 #    - nginx
-    - apache2
     - php70
+    - apache2
     - composer
     - memcached
     - sqlite
     - mysql
-    - postgresql
     - phpmyadmin
     - project-db
     - phpunit

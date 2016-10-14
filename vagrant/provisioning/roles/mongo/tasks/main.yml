@@ -16,7 +16,7 @@
   apt_key: url=https://docs.mongodb.org/10gen-gpg-key.asc id=7F0CEB10 state=present validate_certs=False
 
 - name: add MongoDB stable repository (for Ubuntu)
-  apt_repository: repo='deb http://repo.mongodb.org/apt/ubuntu  trusty/mongodb-org/3.2 multiverse' state=present
+  apt_repository: repo='deb http://repo.mongodb.org/apt/ubuntu  xenial/mongodb-org/3.2 multiverse' state=present
 
 - name: run the equivalent of "apt-get update" as a separate step
   apt: update_cache=yes
@@ -45,15 +45,20 @@
   become: true
   
 - name: create mongod system service
-  copy: src=/vagrant/provisioning/roles/mongo/templates/mongod.service dest=/lib/systemd/system/mongod.service
+  copy: src=/vagrant/provisioning/roles/mongo/templates/no-auth.mongod.service dest=/lib/systemd/system/mongod.service
   become: true
   tags: phpfpm
   
 - name: pip install pymongo
   pip: name=pymongo
   become: true
+ 
+- name: start mongod service
+  service: name=mongod state=started
+  become: true
   
 - name: create mongo data
-  mongodb_user: database=projectdb name=laravel password=laravel roles='dbAdmin,readWriteAnyDatabase' state=present
+  mongodb_user: database=admin name=laravel password=laravel roles='root' state=present
   become: true
+
 
