@@ -17,7 +17,6 @@
     - memcached
     - sqlite
     - mysql
-    - postgresql
     - phpmyadmin
     - project-db
     - phpunit
