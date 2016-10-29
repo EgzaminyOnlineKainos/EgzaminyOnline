@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Support\Facades\Auth;
 use App;
 
-class AdminMiddleware
+class TeacherMiddleware
 {
     /**
      * Handle an incoming request.
@@ -17,7 +17,7 @@ class AdminMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (!Auth::guest() && Auth::user()->userType=='admin') {
+        if (!Auth::guest() && (Auth::user()->userType=="admin" || Auth::user()->userType=="teacher")) {
             return $next($request);
         }
 
