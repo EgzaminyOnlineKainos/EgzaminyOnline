@@ -15,12 +15,21 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/demo', function () {
+    return view('lte.demo');
+});
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
 
 //Admin
 Route::group(['middleware' => ['web','isAdmin']], function() {
+
+});
+
+//Teacher
+Route::group(['middleware' => ['web','isTeacher']], function() {
 
 });
 
