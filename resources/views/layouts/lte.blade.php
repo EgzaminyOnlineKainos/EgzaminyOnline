@@ -50,6 +50,7 @@
 
     @yield('content')
 
+    @include('lte.includes.footer')
 <!-- Scripts -->
 
     <!-- jQuery 2.2.3 -->

@@ -15,9 +15,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/demo', function () {
-    return view('lte.demo');
-});
+Route::get('/demo', 'MainController@index');
+
+Route::get('/scientist/{name}/{lastname}/{color}', 'TestController@index');
+Route::get('/destroy/{id}', 'TestController@destroy');
 
 Auth::routes();
 

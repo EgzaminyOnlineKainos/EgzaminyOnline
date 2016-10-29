@@ -4,3 +4,7 @@
     overflow: scroll;
     overflow-x: hidden;
 }
+
+.main-sidebar {
+    min-width: 65px;
+}

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entities;
 
 
 use Doctrine\ORM\Mapping AS ORM;
@@ -17,47 +17,88 @@ class Scientist
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\Column(type="string")
      */
-    protected $firstname;
+    private $firstname;
 
     /**
      * @ORM\Column(type="string")
      */
-    protected $lastname;
+    private $lastname;
 
     /**
      * @param $firstname
      * @param $lastname
      */
-    public function __construct($firstname, $lastname)
-    {
-        $this->firstname = $firstname;
-        $this->lastname  = $lastname;
 
-        $this->theories = new ArrayCollection;
-    }
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $color;
 
+    /**
+     * @return mixed
+     */
     public function getId()
     {
         return $this->id;
     }
 
+    /**
+     * @return mixed
+     */
     public function getFirstname()
     {
         return $this->firstname;
     }
 
+    /**
+     * @param mixed $firstname
+     * @return Scientist
+     */
+    public function setFirstname($firstname)
+    {
+        $this->firstname = $firstname;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getLastname()
     {
         return $this->lastname;
     }
 
-    public function getTheories()
+    /**
+     * @param mixed $lastname
+     * @return Scientist
+     */
+    public function setLastname($lastname)
     {
-        return $this->theories;
+        $this->lastname = $lastname;
+        return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getColor()
+    {
+        return $this->color;
+    }
+
+    /**
+     * @param mixed $color
+     * @return Scientist
+     */
+    public function setColor($color)
+    {
+        $this->color = $color;
+        return $this;
+    }
+
 }
