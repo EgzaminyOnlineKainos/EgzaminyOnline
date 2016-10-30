@@ -37,7 +37,7 @@ class Exam
 
     /**
      * @var ExamTask[]
-    /**
+     *
      * @ORM\ManyToMany(targetEntity="ExamTask")
      * @ORM\JoinTable(name="exam_examtasks",
      *      joinColumns={@ORM\JoinColumn(name="exam_id", referencedColumnName="id")},
