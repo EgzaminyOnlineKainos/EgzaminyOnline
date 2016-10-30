@@ -1,7 +1,7 @@
 <VirtualHost *:80>
         ServerName {{ item.name }}
         ServerAdmin webmaster@localhost
-        DocumentRoot {{ item.rootFolder }}/
+        DocumentRoot {{ item.rootFolder }}/public/
 
         LogLevel info
 
