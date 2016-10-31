@@ -23,6 +23,7 @@
     - php-xdebug
     - libmemcached-dev
     - php-memcached
+    - php-mongo
   tags: php
 
 - name: PHP | FPM php.ini

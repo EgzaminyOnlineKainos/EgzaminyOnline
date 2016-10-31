@@ -10,9 +10,9 @@
   roles:
     - initial
     - common
-#    - nginx
+    - nginx
     - php70
-    - apache2
+#    - apache2
     - composer
     - memcached
 #   - sqlite
