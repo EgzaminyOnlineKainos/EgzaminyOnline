@@ -54,16 +54,14 @@
 
     @yield('content')
 
-<<<<<<< HEAD
     @include('lte.includes.footer')
-=======
+
     <?php /* @include('lte.includes.footer') */ ?>
 
     @include('lte.includes.panel_right')
 </div>
 <!-- ./wrapper -->
 
->>>>>>> e22599322eb7f8d70665321f4502a559111eae6b
 <!-- Scripts -->
 
     <!-- jQuery 2.2.3 -->
