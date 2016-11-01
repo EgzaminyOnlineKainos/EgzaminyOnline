@@ -47,8 +47,18 @@
     </script>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+    @include('lte.includes.header')
+
+    @include('lte.includes.main_sidebar')
 
     @yield('content')
+
+    <?php /* @include('lte.includes.footer') */ ?>
+
+    @include('lte.includes.panel_right')
+</div>
+<!-- ./wrapper -->
 
 <!-- Scripts -->
 
