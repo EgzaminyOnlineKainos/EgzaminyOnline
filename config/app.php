@@ -183,7 +183,6 @@ return [
         /**
          * Project Service Providers
          */
-        Jenssegers\Mongodb\MongodbServiceProvider::class,
 
     ],
 
