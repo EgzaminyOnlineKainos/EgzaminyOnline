@@ -1,0 +1,26 @@
+- name: ensure system packages are installed
+  apt: pkg={{ item }} state=latest
+  with_items:
+    - git-core
+    - curl
+    - wget
+    - htop
+    - mc
+    - libpq-dev
+    - build-essential
+    - python-software-properties
+    - python-mysqldb
+    - python-psycopg2
+    - unzip
+    - autoconf
+    - g++
+    - make
+    - openssl
+    - libssl-dev
+    - libcurl4-openssl-dev
+    - pkg-config
+    - libsasl2-dev
+    - python-pip
+    - python-dev
+
+- include: ntp.yml

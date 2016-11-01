@@ -1,0 +1,6 @@
+.main-sidebar, .left-side {
+    height: 100%;
+    position: fixed;
+    overflow: scroll;
+    overflow-x: hidden;
+}
