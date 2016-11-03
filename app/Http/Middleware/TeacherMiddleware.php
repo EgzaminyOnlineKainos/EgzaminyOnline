@@ -17,10 +17,10 @@ class TeacherMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (!Auth::guest() && (Auth::user()->userType=="admin" || Auth::user()->userType=="teacher")) {
+        if (!Auth::guest() && (Auth::user()->user_type=="admin" || Auth::user()->user_type=="teacher")) {
             return $next($request);
         }
 
-        return redirect(App::getLocale() . '/login');
+        return redirect('/home')->with('status', 'Insufficient permission level.');
     }
 }

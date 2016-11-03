@@ -15,9 +15,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/demo', function () {
-    return view('lte.demo');
-});
+Route::get('/demo', 'MainController@index');
+
+Route::get('/scientist/{name}/{lastname}/{color}', 'TestController@index');
+Route::get('/destroy/{id}', 'TestController@destroy');
 
 Auth::routes();
 
@@ -25,12 +26,12 @@ Route::get('/home', 'HomeController@index');
 
 //Admin
 Route::group(['middleware' => ['web','isAdmin']], function() {
-
+    Route::get('/admin', 'Admin\AdminController@index');
 });
 
 //Teacher
 Route::group(['middleware' => ['web','isTeacher']], function() {
-
+    Route::get('/teacher', 'Teacher\TeacherController@index');
 });
 
 //User

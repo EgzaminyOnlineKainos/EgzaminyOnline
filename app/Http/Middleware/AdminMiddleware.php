@@ -17,10 +17,10 @@ class AdminMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (!Auth::guest() && Auth::user()->userType=='admin') {
+        if (!Auth::guest() && Auth::user()->user_type=='admin') {
             return $next($request);
         }
 
-        return redirect(App::getLocale() . '/login');
+        return redirect('/home')->with('status', 'Insufficient permission level.');
     }
 }
