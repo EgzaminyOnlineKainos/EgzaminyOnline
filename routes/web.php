@@ -26,12 +26,12 @@ Route::get('/home', 'HomeController@index');
 
 //Admin
 Route::group(['middleware' => ['web','isAdmin']], function() {
-
+    Route::get('/admin', 'Admin\AdminController@index');
 });
 
 //Teacher
 Route::group(['middleware' => ['web','isTeacher']], function() {
-
+    Route::get('/teacher', 'Teacher\TeacherController@index');
 });
 
 //User

@@ -12,7 +12,7 @@ return [
     | the migrations on disk haven't actually been run in the database.
     |
     */
-    'table'     => 'migrations',
+    'table'     => 'doctrine_migrations',
     /*
     |--------------------------------------------------------------------------
     | Migration Directory
