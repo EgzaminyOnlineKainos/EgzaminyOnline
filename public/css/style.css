@@ -7,8 +7,6 @@
 
 .main-sidebar {
     min-width: 65px;
-<<<<<<< HEAD
-=======
 }
 
 /* Sidebar */
@@ -51,5 +49,4 @@
     .sidebar-mini.sidebar-collapse .content-wrapper, .sidebar-mini.sidebar-collapse .right-side, .sidebar-mini.sidebar-collapse .main-footer {
         margin-left: 65px !important;
     }
->>>>>>> e22599322eb7f8d70665321f4502a559111eae6b
 }
