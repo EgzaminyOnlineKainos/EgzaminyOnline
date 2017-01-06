@@ -7,5 +7,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 class StudentController extends Controller
 {
-
+    /**
+     * @Route("/student/index", name="student:index")
+     */
+    public function indexAction(Request $request)
+    {
+        return $this->render(':student:index.html.twig');
+    }
 }
