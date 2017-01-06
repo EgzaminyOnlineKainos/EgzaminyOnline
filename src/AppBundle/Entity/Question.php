@@ -8,7 +8,7 @@ namespace AppBundle\Entity;
   * @ORM\Entity(repositoryClass="AppBundle\Repository\QuestionRepository")
   * @ORM\Table(name="question")
   */
-class Question
+class Question implements \JsonSerializable
 {
     /**
      * @ORM\Id
@@ -193,5 +193,19 @@ class Question
     {
         $this->owner = $owner;
         return $this;
+    }
+
+    function jsonSerialize()
+    {
+        return [
+            'id' => $this->getId(),
+            'type' => $this->getType(),
+            'question' => $this->getQuestion(),
+            'correctAnswer' => $this->getCorrectAnswer(),
+            'incorrectAnswerOne' => $this->getIncorrectAnswerOne(),
+            'incorrectAnswerTwo' => $this->getIncorrectAnswerTwo(),
+            'incorrectAnswerThree' => $this->getIncorrectAnswerThree(),
+            'owner' => $this->getOwner()
+        ];
     }
 }
