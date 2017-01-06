@@ -35,32 +35,26 @@
         <aside class="main-sidebar">
             <!-- sidebar: style can be found in sidebar.less -->
             <section class="sidebar">
-                <li class="header">Student</li>
+                <ul class="sidebar-menu">
+                    <li class="header">Student</li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-globe"></i><span>Main</span>
+                        </a>
+                    </li>
+                </ul>
             </section>
             <!-- /.sidebar -->
         </aside>
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
-            <!-- Content Header (Page header) -->
-            <section class="content-header">
-                <h1>
-                    Dashboard
-                    <small>Control panel</small>
-                </h1>
-            </section>
-
-            <!-- Main content -->
-            <section class="content">
-
-            </section>
-            <!-- /.content -->
+            {% block body %}{% endblock %}
         </div>
         <!-- /.content-wrapper -->
 
         <div class="control-sidebar-bg"></div>
     </div>
-        {% block body %}{% endblock %}
 
         {% block javascripts %}
             <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
