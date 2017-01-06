@@ -24,7 +24,8 @@
         "incenteev/composer-parameter-handler": "^2.0",
         "ext-intl": "*",
         "ext-mbstring": "*",
-        "ext-apcu": "*"
+        "ext-apcu": "*",
+        "doctrine/doctrine-migrations-bundle": "^1.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
