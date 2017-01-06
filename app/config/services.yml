@@ -7,3 +7,42 @@ services:
 #    service_name:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+
+    app.repository.exam:
+        class: AppBundle\Repository\ExamRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - 'AppBundle\Entity\Exam'
+
+    app.repository.question:
+        class: AppBundle\Repository\QuestionRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - 'AppBundle\Entity\Question'
+
+    app.repository.user:
+        class: AppBundle\Repository\UserRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - 'AppBundle\Entity\User'
+
+    app.exam.provider:
+        class: AppBundle\Service\Exam\ExamProvider
+        arguments:
+            - '@app.repository.exam'
+
+    app.question.provider:
+        class: AppBundle\Service\Question\QuestionProvider
+        arguments:
+            - '@app.repository.question'
+
+    app.exam.creator:
+        class: AppBundle\Service\Exam\ExamCreator
+        arguments:
+            - '@app.repository.exam'
+
+    app.question.creator:
+        class: AppBundle\Service\Question\QuestionCreator
+        arguments:
+            - '@app.repository.question'
+
