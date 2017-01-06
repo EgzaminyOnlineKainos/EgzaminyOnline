@@ -17,5 +17,5 @@ vhosts:
   
 vhosts_other:
   [
-    { name: pma_host, rootFolder: '/usr/share/phpmyadmin'} 
+    { name: 'pma.egzaminy.dev', rootFolder: '/usr/share/phpmyadmin'}
   ]

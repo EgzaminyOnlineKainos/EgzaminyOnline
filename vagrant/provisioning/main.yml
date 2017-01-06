@@ -2,7 +2,7 @@
 - hosts: vagrant
   become: true
   vars:
-    - SymfonyProjectName: myproject
+    - SymfonyProjectName: project
      # [OPTIONAL] GitHub OAuth token to extend API rate limit
      # How to generate it: https://github.com/blog/1509-personal-api-tokens
     - github_oauth_token: "d646d3447e4670537b8717eec301c150eba1874b" # Uncommend and add GitHub OAuth Token here!
