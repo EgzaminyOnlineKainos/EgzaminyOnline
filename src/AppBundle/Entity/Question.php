@@ -54,6 +54,14 @@ class Question
     private $incorrectAnswerThree;
 
     /**
+     * @var User
+     *
+     * @ORM\OneToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="owner_id", referencedColumnName="id")
+     */
+    private $owner;
+
+    /**
      * @return mixed
      */
     public function getId()
@@ -166,6 +174,24 @@ class Question
     public function setIncorrectAnswerThree(string $incorrectAnswerThree): Question
     {
         $this->incorrectAnswerThree = $incorrectAnswerThree;
+        return $this;
+    }
+
+    /**
+     * @return User
+     */
+    public function getOwner(): User
+    {
+        return $this->owner;
+    }
+
+    /**
+     * @param User $owner
+     * @return Question
+     */
+    public function setOwner(User $owner): Question
+    {
+        $this->owner = $owner;
         return $this;
     }
 }

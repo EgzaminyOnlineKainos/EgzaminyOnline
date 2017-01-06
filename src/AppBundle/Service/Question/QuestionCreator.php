@@ -2,6 +2,7 @@
 namespace AppBundle\Service\Question;
 
 use AppBundle\Entity\Question;
+use AppBundle\Entity\User;
 use AppBundle\Repository\QuestionRepository;
 
 class QuestionCreator
@@ -13,7 +14,7 @@ class QuestionCreator
         $this->questionRepository = $questionRepository;
     }
 
-    public function create($type, $questionContent, $correctAnswer, $incorrectAnswerOne, $incorrectAnswerTwo, $incorrectAnswerThree)
+    public function create($type, $questionContent, $correctAnswer, $incorrectAnswerOne, $incorrectAnswerTwo, $incorrectAnswerThree, User $owner)
     {
         $question = new Question();
         $question->setType($type);
@@ -22,6 +23,7 @@ class QuestionCreator
         $question->setIncorrectAnswerOne($incorrectAnswerOne);
         $question->setIncorrectAnswerTwo($incorrectAnswerTwo);
         $question->setIncorrectAnswerThree($incorrectAnswerThree);
+        $question->setOwner($owner);
         $this->questionRepository->create($question);
     }
 }
