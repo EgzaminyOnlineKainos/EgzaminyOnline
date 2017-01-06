@@ -7,4 +7,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends Controller
 {
+    /**
+     * @Route("/", name="index")
+     */
+    public function indexAction(Request $request)
+    {
+        return $this->render(':default:index.html.twig');
+    }
 }
