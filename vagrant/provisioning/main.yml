@@ -21,6 +21,5 @@
     - postgresql
     - phpmyadmin
     - project-db
-    - symfony-project
     - phpunit
     - xdebug
