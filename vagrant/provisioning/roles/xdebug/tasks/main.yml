@@ -1,0 +1,13 @@
+---
+- name: Install xDebug
+  sudo: yes
+  apt: pkg=php-xdebug state=latest
+
+- name: copy xdebug.ini
+  template: src=xdebug.ini.j2 dest=/etc/php/7.0/mods-available/xdebug.ini
+  
+- name: enable xdebug php module
+  shell: phpenmod xdebug
+  become: true
+  args:
+      creates: /etc/php/7.0/fpm/conf.d/20-xdebug.ini

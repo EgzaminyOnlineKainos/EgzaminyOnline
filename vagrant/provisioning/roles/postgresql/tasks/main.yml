@@ -1,0 +1,13 @@
+---
+- name: add PostgreSQL repository signing key
+  shell: wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
+  become: true
+
+- name: add PostgreSQL repo
+  shell: echo 'deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main' | tee /etc/apt/sources.list.d/pgdg.list
+  become: true
+
+- name: install PostgreSQL
+  apt: pkg=postgresql-9.3 state=latest update_cache=yes
+  notify: restart postgresql
+

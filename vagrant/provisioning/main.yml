@@ -1,0 +1,26 @@
+---
+- hosts: vagrant
+  become: true
+  vars:
+    - SymfonyProjectName: myproject
+     # [OPTIONAL] GitHub OAuth token to extend API rate limit
+     # How to generate it: https://github.com/blog/1509-personal-api-tokens
+    - github_oauth_token: "d646d3447e4670537b8717eec301c150eba1874b" # Uncommend and add GitHub OAuth Token here!
+  vars_files:
+    - defaults/variables.yml
+
+  roles:
+    - initial
+    - common
+    - nginx
+    - php70
+    - composer
+    - memcached
+    - sqlite
+    - mysql
+    - postgresql
+    - phpmyadmin
+    - project-db
+    - symfony-project
+    - phpunit
+    - xdebug
