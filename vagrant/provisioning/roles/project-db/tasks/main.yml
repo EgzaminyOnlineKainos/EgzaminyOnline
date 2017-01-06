@@ -1,3 +1,0 @@
----
-- name: create MySQL DB for Project
-  mysql_db: name={{ mysql_db }} encoding=utf8 state=present
