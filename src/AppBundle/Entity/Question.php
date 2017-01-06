@@ -5,7 +5,7 @@ namespace AppBundle\Entity;
 
  /**
   * Class Question
-  * @ORM\Entity
+  * @ORM\Entity(repositoryClass="AppBundle\Repository\QuestionRepository")
   * @ORM\Table(name="question")
   */
 class Question
