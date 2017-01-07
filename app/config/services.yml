@@ -4,10 +4,6 @@ parameters:
 #    parameter_name: value
 
 services:
-#    service_name:
-#        class: AppBundle\Directory\ClassName
-#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
-
     app.repository.exam:
         class: AppBundle\Repository\ExamRepository
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
@@ -45,4 +41,15 @@ services:
         class: AppBundle\Service\Question\QuestionCreator
         arguments:
             - '@app.repository.question'
+
+    app.service.password_service:
+        class: AppBundle\Service\Security\PasswordService
+        arguments:
+            - '@security.password_encoder'
+
+    app.service.user_creator:
+        class: AppBundle\Service\User\UserCreator
+        arguments:
+            - '@app.service.password_service'
+            - '@app.repository.user'
 
