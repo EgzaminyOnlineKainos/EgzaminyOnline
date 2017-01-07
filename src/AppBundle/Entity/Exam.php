@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping  as ORM;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ExamRepository")
  * @ORM\Table(name="exam")
  */
-class Exam
+class Exam implements \JsonSerializable
 {
     /**
      * @ORM\Id
@@ -61,7 +61,7 @@ class Exam
     /**
      * @var User
      *
-     * @ORM\OneToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="owner_id", referencedColumnName="id")
      */
     private $owner;
@@ -206,5 +206,16 @@ class Exam
     {
         $this->owner = $owner;
         return $this;
+    }
+
+    function jsonSerialize()
+    {
+        return [
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'startDate' => $this->getStartDate()->format('Y-m-d H:i'),
+            'endDate' => $this->getEndDate()->format('Y-m-d H:i'),
+            'owner' => $this->getOwner()
+        ];
     }
 }

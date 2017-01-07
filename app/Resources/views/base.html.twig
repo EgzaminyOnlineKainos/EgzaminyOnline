@@ -10,6 +10,7 @@
                   rel="stylesheet"/>
             <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" type="text/css"
                   rel="stylesheet"/>
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" type="text/css" rel="stylesheet">
         {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
@@ -46,6 +47,12 @@
                     <li>
                         <a href="{{ url('student:index') }}">
                             <i class="fa fa-globe"></i><span>Home</span>
+                        </a>
+                    </li>
+                    <li class="header">Teacher</li>
+                    <li>
+                        <a href="{{ url('teacher:exams') }}">
+                            <i class="fa fa-globe"></i><span>Exams</span>
                         </a>
                     </li>
                 </ul>

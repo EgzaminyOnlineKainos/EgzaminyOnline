@@ -1,0 +1,132 @@
+{% extends 'base.html.twig' %}
+
+{# @var exams \AppBundle\Entity\Exam[] #}
+
+{% block body %}
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Teacher
+            <small>View exams</small>
+        </h1>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        {% for flashMessage in app.session.flashbag.get('success') %}
+            <div class="flash-notice">
+                <div class="alert alert-success alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    {{ flashMessage | trans }}
+                </div>
+            </div>
+        {% endfor %}
+        {% for flashMessage in app.session.flashbag.get('error') %}
+            <div class="flash-notice">
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    {{ flashMessage | trans }}
+                </div>
+            </div>
+        {% endfor %}
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#createModal">
+                    Create
+                </button><hr>
+                <table id="exams" class="display" cellspacing="0" width="100%">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Start date</th>
+                        <th>End date</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for exam in exams %}
+                    <tr>
+                        <td>{{ exam.name }}</td>
+                        <td>{{ exam.startDate.format('Y-m-d H:i') }}</td>
+                        <td>{{ exam.endDate.format('Y-m-d H:i') }}</td>
+                        <td>
+                            <a href="#" class="btn btn-info">Manage</a>
+                            <button class="btn btn-danger" onclick="submitRemoveForm()">Remove</button>
+                            <form method="post" id="removeExamForm">
+                                <input type="hidden" name="action" value="removeExam">
+                                <input type="hidden" name="examId" value="{{ exam.id }}">
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+    <!-- /.content -->
+
+    <!-- createModal -->
+    <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Create an exam</h5>
+                </div>
+                <div class="modal-body">
+                    <form method="post" id="createForm">
+                        <label>Name</label>
+                        <input type="text" class="form-control" name="name" required>
+                        <div class="form-group">
+                            <label>Date:</label>
+                            <div class="input-group date">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input type="text" class="form-control pull-right" id="datepicker" name="dateRange" required>
+                            </div>
+                            <!-- /.input group -->
+                        </div>
+                        <input type="hidden" name="action" value="createExam">
+                        <button type="submit" id="examCreateSubmitButton" class="hidden"></button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success" onclick="submitCreateForm()">Create</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css" type="text/css"
+          rel="stylesheet"/>
+    <link href="{{ asset('plugins/daterangepicker/daterangepicker.css') }}" type="text/css" rel="stylesheet">
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+    <script src="{{ asset('plugins/daterangepicker/moment.min.js') }}"></script>
+    <script src="{{ asset('plugins/daterangepicker/daterangepicker.js') }}"></script>
+    <script>
+        $('#exams').DataTable();
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            $('#datepicker').daterangepicker({timePicker: true, timePickerIncrement: 30, timePicker24Hour: true, locale: {format: 'DD.MM.YYYY H:mm'}});
+        });
+    </script>
+    <script>
+        function submitCreateForm() {
+            $('#examCreateSubmitButton').click();
+        }
+
+        function submitRemoveForm() {
+            $('#removeExamForm').submit();
+        }
+    </script>
+{% endblock %}
