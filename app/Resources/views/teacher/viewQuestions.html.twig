@@ -33,7 +33,8 @@
             <div class="panel-body">
                 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#createModal">
                     Create
-                </button><hr>
+                </button>
+                <hr>
                 <table id="questions" class="display" cellspacing="0" width="100%">
                     <thead>
                     <tr>
@@ -46,7 +47,10 @@
                         <tr>
                             <td>{{ question.question }}</td>
                             <td>
-                                <a href="#" class="btn btn-info">Edit</a>
+                                <button type="button" class="btn btn-warning" data-toggle="modal"
+                                        data-target="#editModal" onclick="fillEditFormData({{ question.id }})">
+                                    Edit
+                                </button>
                                 <button class="btn btn-danger" onclick="submitRemoveForm()">Remove</button>
                                 <form method="post" id="removeQuestionForm">
                                     <input type="hidden" name="action" value="removeQuestion">
@@ -63,7 +67,8 @@
     <!-- /.content -->
 
     <!-- createModal -->
-    <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -92,6 +97,42 @@
             </div>
         </div>
     </div>
+
+    <!-- editModal -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit a question</h5>
+                </div>
+                <div class="modal-body">
+                    <form method="post" id="editForm">
+                        <label>Question</label>
+                        <input type="text" class="form-control" name="question" id="question" required>
+                        <label>Correct answer</label>
+                        <input type="text" class="form-control" name="correctAnswer" id="correctAnswer" required>
+                        <label>Incorrect answer #1</label>
+                        <input type="text" class="form-control" name="incorrectAnswerOne" id="incorrectAnswerOne"
+                               required>
+                        <label>Incorrect answer #2</label>
+                        <input type="text" class="form-control" name="incorrectAnswerTwo" id="incorrectAnswerTwo"
+                               required>
+                        <label>Incorrect answer #3</label>
+                        <input type="text" class="form-control" name="incorrectAnswerThree" id="incorrectAnswerThree"
+                               required>
+                        <input type="hidden" name="action" value="editQuestion">
+                        <input type="hidden" name="questionId" id="questionId">
+                        <button type="submit" id="questionEditSubmitButton" class="hidden"></button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success" onclick="submitEditForm()">Edit</button>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block stylesheets %}
@@ -111,8 +152,37 @@
             $('#questionCreateSubmitButton').click();
         }
 
+        function submitEditForm() {
+            $('#questionEditSubmitButton').click();
+        }
+
         function submitRemoveForm() {
             $('#removeQuestionForm').submit();
+        }
+
+        function fillEditFormData(id) {
+            var questions = [
+                {% for question in questions %}
+                {
+                    id: {{ question.id }},
+                    question: '{{ question.question }}',
+                    answer: '{{ question.correctAnswer }}',
+                    incorrectAnswerOne: '{{ question.incorrectAnswerOne }}',
+                    incorrectAnswerTwo: '{{ question.incorrectAnswerTwo }}',
+                    incorrectAnswerThree: '{{ question.incorrectAnswerThree }}'
+                },
+                {% endfor %}
+            ];
+            $.each(questions, function (index, value) {
+                if(value.id == id){
+                    $('#question').val(value.question);
+                    $('#correctAnswer').val(value.answer);
+                    $('#incorrectAnswerOne').val(value.incorrectAnswerOne);
+                    $('#incorrectAnswerTwo').val(value.incorrectAnswerTwo);
+                    $('#incorrectAnswerThree').val(value.incorrectAnswerThree);
+                    $('#questionId').val(value.id);
+                }
+            });
         }
     </script>
 {% endblock %}
