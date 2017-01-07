@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8" />
+        <meta charset="UTF-8"/>
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}
             <link href="{{ asset('css/AdminLTE.min.css') }}" type="text/css" rel="stylesheet">
@@ -10,69 +10,100 @@
                   rel="stylesheet"/>
             <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" type="text/css"
                   rel="stylesheet"/>
-            <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" type="text/css" rel="stylesheet">
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" type="text/css"
+                  rel="stylesheet">
         {% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
     </head>
     <body class="hold-transition skin-blue sidebar-mini">
-    <div class="wrapper">
-        <header class="main-header">
-            <!-- Logo -->
-            <a href="{{ url('index') }}" class="logo">
-                <!-- mini logo for sidebar mini 50x50 pixels -->
-                <span class="logo-mini">E<b>O</b></span>
-                <!-- logo for regular state and mobile devices -->
-                <span class="logo-lg">Egzaminy<b>Online</b></span>
-            </a>
-            <!-- Header Navbar: style can be found in header.less -->
-            <nav class="navbar navbar-static-top">
-                <!-- Sidebar toggle button-->
-                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-                    <span class="sr-only">Toggle navigation</span>
+        <div class="wrapper">
+            <header class="main-header">
+                <!-- Logo -->
+                <a href="{{ url('index') }}" class="logo">
+                    <!-- mini logo for sidebar mini 50x50 pixels -->
+                    <span class="logo-mini">E<b>O</b></span>
+                    <!-- logo for regular state and mobile devices -->
+                    <span class="logo-lg">Egzaminy<b>Online</b></span>
                 </a>
-            </nav>
-        </header>
-        <!-- Left side column. contains the logo and sidebar -->
-        <aside class="main-sidebar">
-            <!-- sidebar: style can be found in sidebar.less -->
-            <section class="sidebar">
-                <ul class="sidebar-menu">
-                    <li class="header">Home</li>
-                    <li>
-                        <a href="{{ url('index') }}">
-                            <i class="fa fa-globe"></i><span>Home</span>
-                        </a>
-                    </li>
-                    <li class="header">Student</li>
-                    <li>
-                        <a href="{{ url('student:index') }}">
-                            <i class="fa fa-globe"></i><span>Home</span>
-                        </a>
-                    </li>
-                    <li class="header">Teacher</li>
-                    <li>
-                        <a href="{{ url('teacher:exams') }}">
-                            <i class="fa fa-globe"></i><span>Exams</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ url('teacher:questions') }}">
-                            <i class="fa fa-globe"></i><span>Questions</span>
-                        </a>
-                    </li>
-                </ul>
-            </section>
-            <!-- /.sidebar -->
-        </aside>
+                <!-- Header Navbar: style can be found in header.less -->
+                <nav class="navbar navbar-static-top">
+                    <!-- Sidebar toggle button-->
+                    <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                        <span class="sr-only">Toggle navigation</span>
+                    </a>
+                    <div class="navbar-custom-menu">
+                        <ul class="nav navbar-nav">
+                            <!-- User Account: style can be found in dropdown.less -->
+                            <li class="dropdown user user-menu">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <img src="{{ gravatar(app.user.username) }}" class="user-image" alt="User Image"/>
+                                    <span class="hidden-xs">{{ app.user.displayName }}</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <!-- User image -->
+                                    <li class="user-header">
+                                        <img src="{{ gravatar(app.user.username) }}" class="img-circle" alt="User Image"/>
+                                        <p>
+                                            {{ app.user.displayName }}
+                                        </p>
+                                    </li>
+                                    <!-- Menu Body -->
+                                    <li class="user-body">
+                                        <!-- /.row -->
+                                    </li>
+                                    <!-- Menu Footer-->
+                                    <li class="user-footer">
+                                        <div class="pull-right">
+                                            <a href="{{ logout_path() }}" class="btn btn-default btn-flat">Logout</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </header>
+            <!-- Left side column. contains the logo and sidebar -->
+            <aside class="main-sidebar">
+                <!-- sidebar: style can be found in sidebar.less -->
+                <section class="sidebar">
+                    <ul class="sidebar-menu">
+                        <li class="header">Home</li>
+                        <li>
+                            <a href="{{ url('index') }}">
+                                <i class="fa fa-globe"></i><span>Home</span>
+                            </a>
+                        </li>
+                        <li class="header">Student</li>
+                        <li>
+                            <a href="{{ url('student:index') }}">
+                                <i class="fa fa-globe"></i><span>Home</span>
+                            </a>
+                        </li>
+                        <li class="header">Teacher</li>
+                        <li>
+                            <a href="{{ url('teacher:exams') }}">
+                                <i class="fa fa-globe"></i><span>Exams</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url('teacher:questions') }}">
+                                <i class="fa fa-globe"></i><span>Questions</span>
+                            </a>
+                        </li>
+                    </ul>
+                </section>
+                <!-- /.sidebar -->
+            </aside>
 
-        <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper">
-            {% block body %}{% endblock %}
+            <!-- Content Wrapper. Contains page content -->
+            <div class="content-wrapper">
+                {% block body %}{% endblock %}
+            </div>
+            <!-- /.content-wrapper -->
+
+            <div class="control-sidebar-bg"></div>
         </div>
-        <!-- /.content-wrapper -->
-
-        <div class="control-sidebar-bg"></div>
-    </div>
 
         {% block javascripts %}
             <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>

@@ -47,4 +47,12 @@ class DefaultController extends Controller
         
         return new Response("ok", 200);
     }
+    
+    /**
+     * @Route("/logout", name="logout")
+     */
+    public function logoutAction()
+    {
+        
+    }
 }
