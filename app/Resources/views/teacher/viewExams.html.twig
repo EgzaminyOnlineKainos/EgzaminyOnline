@@ -50,7 +50,7 @@
                         <td>{{ exam.startDate.format('Y-m-d H:i') }}</td>
                         <td>{{ exam.endDate.format('Y-m-d H:i') }}</td>
                         <td>
-                            <a href="#" class="btn btn-info">Manage</a>
+                            <a href="{{ url('teacher:exam:configure',{'exam_id': exam.id}) }}" class="btn btn-info">Manage</a>
                             <button class="btn btn-danger" onclick="submitRemoveForm()">Remove</button>
                             <form method="post" id="removeExamForm">
                                 <input type="hidden" name="action" value="removeExam">

@@ -46,6 +46,19 @@ class TeacherController extends Controller
         ]);
     }
 
+    /** @Route("/teacher/exam/{exam_id}", name="teacher:exam:configure") */
+    public function examManageAction(Request $request, $exam_id)
+    {
+        $examProvider = $this->get('app.exam.provider');
+        $examRepository = $this->get('app.repository.exam');
+
+        $exam = $examProvider->getOne($exam_id);
+
+        return $this->render(':teacher:configureExam.html.twig', [
+            'exam' => $exam,
+        ]);
+    }
+
     /** @Route("/teacher/questions", name="teacher:questions") */
     public function questionsAction(Request $request)
     {
