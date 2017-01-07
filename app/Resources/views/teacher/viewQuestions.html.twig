@@ -1,0 +1,118 @@
+{% extends 'base.html.twig' %}
+
+{# @var questions \AppBundle\Entity\Question[] #}
+
+{% block body %}
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Teacher
+            <small>View questions</small>
+        </h1>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        {% for flashMessage in app.session.flashbag.get('success') %}
+            <div class="flash-notice">
+                <div class="alert alert-success alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    {{ flashMessage | trans }}
+                </div>
+            </div>
+        {% endfor %}
+        {% for flashMessage in app.session.flashbag.get('error') %}
+            <div class="flash-notice">
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    {{ flashMessage | trans }}
+                </div>
+            </div>
+        {% endfor %}
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#createModal">
+                    Create
+                </button><hr>
+                <table id="questions" class="display" cellspacing="0" width="100%">
+                    <thead>
+                    <tr>
+                        <th>Question</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for question in questions %}
+                        <tr>
+                            <td>{{ question.question }}</td>
+                            <td>
+                                <a href="#" class="btn btn-info">Edit</a>
+                                <button class="btn btn-danger" onclick="submitRemoveForm()">Remove</button>
+                                <form method="post" id="removeQuestionForm">
+                                    <input type="hidden" name="action" value="removeQuestion">
+                                    <input type="hidden" name="questionId" value="{{ question.id }}">
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+    <!-- /.content -->
+
+    <!-- createModal -->
+    <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Create a question</h5>
+                </div>
+                <div class="modal-body">
+                    <form method="post" id="createForm">
+                        <label>Question</label>
+                        <input type="text" class="form-control" name="question" required>
+                        <label>Correct answer</label>
+                        <input type="text" class="form-control" name="correctAnswer" required>
+                        <label>Incorrect answer #1</label>
+                        <input type="text" class="form-control" name="incorrectAnswerOne" required>
+                        <label>Incorrect answer #2</label>
+                        <input type="text" class="form-control" name="incorrectAnswerTwo" required>
+                        <label>Incorrect answer #3</label>
+                        <input type="text" class="form-control" name="incorrectAnswerThree" required>
+                        <input type="hidden" name="action" value="createQuestion">
+                        <button type="submit" id="questionCreateSubmitButton" class="hidden"></button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success" onclick="submitCreateForm()">Create</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css" type="text/css"
+          rel="stylesheet"/>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+    <script>
+        $('#questions').DataTable();
+    </script>
+    <script>
+        function submitCreateForm() {
+            $('#questionCreateSubmitButton').click();
+        }
+
+        function submitRemoveForm() {
+            $('#removeQuestionForm').submit();
+        }
+    </script>
+{% endblock %}
