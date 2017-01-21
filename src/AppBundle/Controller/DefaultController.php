@@ -26,10 +26,14 @@ class DefaultController extends Controller
      */
     public function adminHomeAction(Request $request)
     {
+        $userProvider  = $this->get('app.user.provider');
+        $examProvider  = $this->get('app.exam.provider');
+        $questProvider = $this->get('app.question.provider');
+
         return $this->render(':default:index.html.twig', [
-            'numOfUsers' => 12,
-            'numOfExams' => 1,
-            'numOfTasks' => 16,
+            'numOfUsers' => $userProvider->countStudents(),
+            'numOfExams' => $examProvider->countAll(),
+            'numOfTasks' => $questProvider->countAll(),
         ]);
     }
 
@@ -61,7 +65,7 @@ class DefaultController extends Controller
         $user->setType("admin");
         $userCreator->createUser($user);
 
-        $user        = new User();
+        $user = new User();
         $user->setPassword("student");
         $user->setUsername("student@egzaminy");
         $user->setDisplayName("San Escobar");

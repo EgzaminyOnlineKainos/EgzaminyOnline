@@ -35,4 +35,15 @@ class ExamProvider
 
         return $data;
     }
+
+    public function countAll()
+    {
+        try {
+            $data = $this->examRepository->countAll();
+        } catch (\Exception $e) {
+            throw new DatabaseErrorException();
+        }
+
+        return $data;
+    }
 }
