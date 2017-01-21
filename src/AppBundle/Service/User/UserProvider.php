@@ -45,4 +45,25 @@ class UserProvider
 
         return $data;
     }
+
+    public function countAll()
+    {
+        try {
+            $data = $this->userRepository->countAll();
+        } catch (\Exception $e) {
+            throw new DatabaseErrorException();
+        }
+
+        return $data;
+    }
+    public function countStudents()
+    {
+        try {
+            $data = $this->userRepository->countStudents();
+        } catch (\Exception $e) {
+            throw new DatabaseErrorException();
+        }
+
+        return $data;
+    }
 }
