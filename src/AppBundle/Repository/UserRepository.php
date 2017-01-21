@@ -52,4 +52,24 @@ class UserRepository extends EntityRepository
             throw new DatabaseErrorException($e);
         }
     }
+
+    public function countAll()
+    {
+        $data = $this->createQueryBuilder('u')
+            ->select('count(u.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+        return $data;
+    }
+
+    public function countStudents()
+    {
+        $data = $this->createQueryBuilder('u')
+            ->select('count(u.id)')
+            ->where('u.type=:type')
+            ->setParameter('type', 'student')
+            ->getQuery()
+            ->getSingleScalarResult();
+        return $data;
+    }
 }

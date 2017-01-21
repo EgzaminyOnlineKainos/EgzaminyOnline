@@ -33,4 +33,6 @@ security:
         - { path: ^/dev, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/users, roles: ROLE_ADMIN }
         - { path: ^/teacher, roles: ROLE_ADMIN }
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/student, roles: ROLE_STUDENT }
         - { path: ^/, roles: ROLE_USER }

@@ -35,4 +35,15 @@ class QuestionProvider
 
         return $data;
     }
+
+    public function countAll()
+    {
+        try {
+            $data = $this->questionRepository->countAll();
+        } catch (\Exception $e) {
+            throw new DatabaseErrorException();
+        }
+
+        return $data;
+    }
 }
