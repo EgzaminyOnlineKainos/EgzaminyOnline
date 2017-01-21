@@ -29,5 +29,19 @@ class UserHandler
 
         $this->userCreator->createUser($user);
     }
+
+    public function handleUserUpdate(array $requestData, User $user)
+    {
+        $user->setType($requestData['accountType'] ?? $user->getType());
+        $user->setDisplayName($requestData['displayName'] ?? $user->getDisplayName());
+        $user->setUsername($requestData['email'] ?? $user->getUsername());
+        $passChanged = false;
+        if(strlen($requestData['password']) > 0) {
+            $user->setPassword($requestData['password']);
+            $passChanged = true;
+        }
+
+        $this->userCreator->updateUser($user, $passChanged);
+    }
 }
 

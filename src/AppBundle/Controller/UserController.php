@@ -41,10 +41,48 @@ class UserController extends Controller
     /**
      * @param $uid
      * @Route("/users/{uid}", name="users:edit")
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function editUser($uid)
     {
+        $provider = $this->get('app.user.provider');
+        $user     = $provider->getUser($uid);
 
+        if (!$user instanceof User) {
+            $this->addFlash('error', 'User cannot be found');
+
+            return $this->redirectToRoute("users:list");
+        }
+
+        return $this->render(':user:edit.html.twig', [
+            'user' => $user,
+        ]);
+    }
+
+    /**
+     * @Route("/users/{uid}/edit", name="users:edit:do")
+     * @Method("POST")
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function editPostUserAction(Request $request, $uid)
+    {
+        $provider = $this->get('app.user.provider');
+        $handler  = $this->get('app.handler.user');
+        $data     = $request->request->all();
+        $user     = $provider->getUser($uid);
+        if (!$user instanceof User) {
+            $this->addFlash('error', 'User cannot be found');
+
+            return $this->redirectToRoute('users:list');
+        }
+
+        $handler->handleUserUpdate($data, $user);
+        $this->addFlash('success', 'User has been successfully updated');
+
+        return $this->redirectToRoute("users:list");
     }
 
     /**
