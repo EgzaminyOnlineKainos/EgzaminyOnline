@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8"/>
+        <meta charset="UTF-8" />
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}
             <link href="{{ asset('css/AdminLTE.min.css') }}" type="text/css" rel="stylesheet">
             <link href="{{ asset('css/skins/_all-skins.min.css') }}" type="text/css" rel="stylesheet">
             <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" type="text/css"
-                  rel="stylesheet"/>
+                  rel="stylesheet" />
             <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" type="text/css"
-                  rel="stylesheet"/>
+                  rel="stylesheet" />
             <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" type="text/css"
                   rel="stylesheet">
         {% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
-    <body class="hold-transition skin-blue sidebar-mini">
+    <body class="hold-transition fixed sidebar-mini {% if is_granted('ROLE_ADMIN') %}skin-red{% else %}skin-blue{% endif %}">
         <div class="wrapper">
             <header class="main-header">
                 <!-- Logo -->
@@ -36,19 +36,23 @@
                             <!-- User Account: style can be found in dropdown.less -->
                             <li class="dropdown user user-menu">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    <img src="{{ gravatar(app.user.username) }}" class="user-image" alt="User Image"/>
+                                    <img src="{{ gravatar(app.user.username) }}" class="user-image" alt="User Image" />
                                     <span class="hidden-xs">{{ app.user.displayName }}</span>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <!-- User image -->
                                     <li class="user-header">
-                                        <img src="{{ gravatar(app.user.username) }}" class="img-circle" alt="User Image"/>
+                                        <img src="{{ gravatar(app.user.username) }}" class="img-circle"
+                                             alt="User Image" />
                                         <p>
                                             {{ app.user.displayName }}
                                         </p>
                                     </li>
                                     <!-- Menu Body -->
                                     <li class="user-body">
+                                        <p style="text-align: center; font-weight: 800;">
+                                            {% if is_granted('ROLE_ADMIN') %}Admin/Teacher{% else %}Student{% endif %}
+                                        </p>
                                         <!-- /.row -->
                                     </li>
                                     <!-- Menu Footer-->
@@ -91,12 +95,14 @@
                                 <i class="fa fa-globe"></i><span>Questions</span>
                             </a>
                         </li>
-                        <li class="header">Users</li>
-                        <li>
-                            <a href="{{ url('users:list') }}">
-                                <i class="fa fa-user"></i><span>Manage users</span>
-                            </a>
-                        </li>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <li class="header">Users</li>
+                            <li>
+                                <a href="{{ url('users:list') }}">
+                                    <i class="fa fa-user"></i><span>Manage users</span>
+                                </a>
+                            </li>
+                        {% endif %}
                     </ul>
                 </section>
                 <!-- /.sidebar -->
