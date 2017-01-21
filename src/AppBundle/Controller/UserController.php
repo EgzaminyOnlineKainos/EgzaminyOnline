@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -33,6 +34,45 @@ class UserController extends Controller
         $handler = $this->get('app.handler.user');
         $data    = $request->request->all();
         $handler->handleUserCreation($data);
+
+        return $this->redirectToRoute("users:list");
+    }
+
+    /**
+     * @param $uid
+     * @Route("/users/{uid}", name="users:edit")
+     */
+    public function editUser($uid)
+    {
+
+    }
+
+    /**
+     * @param $uid
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @Route("/users/{uid}/remove", name="users:remove")
+     *
+     */
+    public function removeUserAction($uid)
+    {
+        if ($uid == $this->getUser()->getId()) {
+            $this->addFlash('error', 'You are not allowed to remove yourself');
+
+            return $this->redirectToRoute("users:list");
+        }
+
+        $provider = $this->get('app.user.provider');
+        $remover  = $this->get('app.service.user_remover');
+        $user     = $provider->getUser($uid);
+
+        if ($user instanceof User) {
+            $remover->removeUser($user);
+            $this->addFlash('success', 'User has been succesfully removed');
+        } else {
+            $this->addFlash('error', 'User cannot be found');
+        }
 
         return $this->redirectToRoute("users:list");
     }
