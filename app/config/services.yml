@@ -65,3 +65,8 @@ services:
             - '@app.repository.user'
             - '@app.repository.question'
 
+    app.handler.user:
+        class: AppBundle\Service\User\UserHandler
+        arguments:
+            - '@app.service.user_creator'
+

@@ -1,0 +1,107 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}Egzaminy Online | Users{% endblock %}
+
+{% block body %}
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Users
+            <small>View all users</small>
+        </h1>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        {% for flashMessage in app.session.flashbag.get('success') %}
+            <div class="flash-notice">
+                <div class="alert alert-success alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    {{ flashMessage | trans }}
+                </div>
+            </div>
+        {% endfor %}
+        {% for flashMessage in app.session.flashbag.get('error') %}
+            <div class="flash-notice">
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    {{ flashMessage | trans }}
+                </div>
+            </div>
+        {% endfor %}
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#createModal">
+                    Create
+                </button>
+                <hr>
+                <table id="users" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Email</th>
+                            <th>Display Name</th>
+                            <th>Account Type</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {# @var users \AppBundle\Entity\User[] #}
+                        {% for user in users %}
+                            <tr>
+                                <td>{{ user.username }}</td>
+                                <td>{{ user.displayName }}</td>
+                                <td>{{ user.type }}</td>
+                                <td>
+                                    <button class="btn btn-warning">Edit</button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- createModal -->
+        <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Create an exam</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" id="createForm" action="{{ url('users:create') }}">
+                            <label>Email</label>
+                            <input type="email" class="form-control" name="email" placeholder="E-mail" required>
+                            <input type="text" class="form-control" name="displayName" placeholder="Display Name" required>
+                            <input type="password" class="form-control" name="password" placeholder="Temporary Password" required>
+                            <select class="form-control" name="accountType" required>
+                                <option selected value="student">Student</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                            <button type="submit" id="userCreateSubmitButton" class="hidden"></button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-success" onclick="submitCreateForm()">Create</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css" type="text/css" rel="stylesheet"/>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+    <script>
+        $('#users').DataTable();
+        function submitCreateForm() {
+            $('#userCreateSubmitButton').click();
+        }
+    </script>
+{% endblock %}

@@ -23,4 +23,15 @@ class UserProvider
 
         return $data;
     }
+
+    public function getAllUsers()
+    {
+        try {
+            $data = $this->userRepository->findAll();
+        } catch (\Exception $e) {
+            throw new DatabaseErrorException();
+        }
+
+        return $data;
+    }
 }
