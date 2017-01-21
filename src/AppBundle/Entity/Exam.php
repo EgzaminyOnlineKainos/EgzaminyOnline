@@ -137,7 +137,7 @@ class Exam implements \JsonSerializable
     /**
      * @return Question[]
      */
-    public function getQuestions(): array
+    public function getQuestions()
     {
         return $this->questions;
     }
@@ -165,7 +165,7 @@ class Exam implements \JsonSerializable
     /**
      * @return User[]
      */
-    public function getStudents(): array
+    public function getStudents()
     {
         return $this->students;
     }

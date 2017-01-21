@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Exam;
 use AppBundle\Entity\Question;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -50,12 +51,52 @@ class TeacherController extends Controller
     public function examManageAction(Request $request, $exam_id)
     {
         $examProvider = $this->get('app.exam.provider');
-        $examRepository = $this->get('app.repository.exam');
+        $userProvider = $this->get('app.user.provider');
+        $questionProvider = $this->get('app.question.provider');
+        $examUpdater = $this->get('app.exam.updater');
+        $examRepo = $this->get('app.repository.exam');
+
+        if ($request->getMethod() === "POST") {
+            switch ($request->get('action')) {
+                case "selectStudents":
+                    try {
+                        $examUpdater->updateStudents($examProvider->getOne($exam_id), $request->get('students') ?? []);
+                    } catch (\Exception $e) {
+                        $this->addFlash("error", $e->getMessage());
+                    }
+                    $this->addFlash("success", "Exam updated");
+                    break;
+                case "selectQuestions":
+                    try {
+                        $examUpdater->updateQuestions($examProvider->getOne($exam_id),
+                            $request->get('questions') ?? []);
+                    } catch (\Exception $e) {
+                        $this->addFlash("error", $e->getMessage());
+                    }
+                    $this->addFlash("success", "Exam updated");
+                    break;
+                case "updateExam":
+                    /** @var Exam $exam */
+                    try {
+                        $exam = $examProvider->getOne($exam_id);
+                        $examUpdater->updateExam($exam, $request->get('name'), $request->get('dateRange'));
+                        $examRepo->update($exam);
+                        $this->addFlash("success", "Exam updated");
+                    } catch (\Exception $e) {
+                        $this->addFlash("error", $e->getMessage());
+                    }
+                    break;
+            }
+        }
 
         $exam = $examProvider->getOne($exam_id);
+        $students = $userProvider->getAllStudents();
+        $questions = $questionProvider->getAllByOwner($this->getUser());
 
         return $this->render(':teacher:configureExam.html.twig', [
             'exam' => $exam,
+            'students' => $students,
+            'questions' => $questions,
         ]);
     }
 

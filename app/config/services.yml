@@ -53,3 +53,15 @@ services:
             - '@app.service.password_service'
             - '@app.repository.user'
 
+    app.user.provider:
+        class: AppBundle\Service\User\UserProvider
+        arguments:
+            - '@app.repository.user'
+
+    app.exam.updater:
+        class: AppBundle\Service\Exam\ExamUpdater
+        arguments:
+            - '@app.repository.exam'
+            - '@app.repository.user'
+            - '@app.repository.question'
+
