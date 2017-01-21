@@ -10,6 +10,8 @@
                   rel="stylesheet" />
             <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" type="text/css"
                   rel="stylesheet" />
+            <link href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" type="text/css"
+                  rel="stylesheet" />
             <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" type="text/css"
                   rel="stylesheet">
         {% endblock %}
@@ -72,30 +74,38 @@
                 <!-- sidebar: style can be found in sidebar.less -->
                 <section class="sidebar">
                     <ul class="sidebar-menu">
-                        <li class="header">Home</li>
-                        <li>
-                            <a href="{{ url('index') }}">
-                                <i class="fa fa-globe"></i><span>Home</span>
-                            </a>
-                        </li>
-                        <li class="header">Student</li>
-                        <li>
-                            <a href="{{ url('student:index') }}">
-                                <i class="fa fa-globe"></i><span>Home</span>
-                            </a>
-                        </li>
-                        <li class="header">Teacher</li>
-                        <li>
-                            <a href="{{ url('teacher:exams') }}">
-                                <i class="fa fa-globe"></i><span>Exams</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ url('teacher:questions') }}">
-                                <i class="fa fa-globe"></i><span>Questions</span>
-                            </a>
-                        </li>
                         {% if is_granted('ROLE_ADMIN') %}
+                            <li class="header">Admin</li>
+                            <li>
+                                <a href="{{ url('index') }}">
+                                    <i class="fa fa-globe"></i><span>Home</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="header">Student</li>
+                            <li>
+                                <a href="{{ url('index') }}">
+                                    <i class="fa fa-globe"></i><span> Home</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-graduation-cap"></i><span> Exams</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <li class="header">Teacher</li>
+                            <li>
+                                <a href="{{ url('teacher:exams') }}">
+                                    <i class="fa fa-graduation-cap"></i><span>Exams</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ url('teacher:questions') }}">
+                                    <i class="fa fa-pencil"></i><span>Questions</span>
+                                </a>
+                            </li>
                             <li class="header">Users</li>
                             <li>
                                 <a href="{{ url('users:list') }}">
@@ -121,6 +131,7 @@
             <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
             <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+            <script src="{{ asset('plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>
             <script src="{{ asset('js/app.min.js') }}"></script>
         {% endblock %}
     </body>
