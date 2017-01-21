@@ -70,3 +70,8 @@ services:
         arguments:
             - '@app.service.user_creator'
 
+    app.service.user_remover:
+        class: AppBundle\Service\User\UserRemover
+        arguments:
+            - '@app.repository.user'
+

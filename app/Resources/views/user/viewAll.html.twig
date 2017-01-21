@@ -51,7 +51,10 @@
                                 <td>{{ user.displayName }}</td>
                                 <td>{{ user.type }}</td>
                                 <td>
-                                    <button class="btn btn-warning">Edit</button>
+                                    <a class="btn btn-warning" href="{{ url('users:edit', {uid: user.id}) }}">Edit</a>
+                                    <a class="btn btn-danger" href="{{ url('users:remove', {uid: user.id}) }}">
+                                        Remove
+                                    </a>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -60,18 +63,51 @@
             </div>
         </div>
         <!-- createModal -->
-        <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Create an exam</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Create user</h5>
                     </div>
                     <div class="modal-body">
                         <form method="post" id="createForm" action="{{ url('users:create') }}">
                             <label>Email</label>
                             <input type="email" class="form-control" name="email" placeholder="E-mail" required>
-                            <input type="text" class="form-control" name="displayName" placeholder="Display Name" required>
-                            <input type="password" class="form-control" name="password" placeholder="Temporary Password" required>
+                            <input type="text" class="form-control" name="displayName" placeholder="Display Name"
+                                   required>
+                            <input type="password" class="form-control" name="password" placeholder="Temporary Password"
+                                   required>
+                            <select class="form-control" name="accountType" required>
+                                <option selected value="student">Student</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                            <button type="submit" id="userCreateSubmitButton" class="hidden"></button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-success" onclick="submitCreateForm()">Create</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- editModal -->
+        <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="Edit user"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Edit user</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" id="createForm" action="{{ url('users:create') }}">
+                            <label>Email</label>
+                            <input type="email" class="form-control" name="email" placeholder="E-mail" required>
+                            <input type="text" class="form-control" name="displayName" placeholder="Display Name"
+                                   required>
+                            <input type="password" class="form-control" name="password" placeholder="Temporary Password"
+                                   required>
                             <select class="form-control" name="accountType" required>
                                 <option selected value="student">Student</option>
                                 <option value="admin">Admin</option>
@@ -92,7 +128,7 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css" type="text/css" rel="stylesheet"/>
+    <link href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css" type="text/css" rel="stylesheet" />
 {% endblock %}
 
 {% block javascripts %}
@@ -102,6 +138,9 @@
         $('#users').DataTable();
         function submitCreateForm() {
             $('#userCreateSubmitButton').click();
+        }
+        function showEditModal(uid) {
+
         }
     </script>
 {% endblock %}

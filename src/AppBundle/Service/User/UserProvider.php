@@ -34,4 +34,15 @@ class UserProvider
 
         return $data;
     }
+
+    public function getUser(int $id)
+    {
+        try {
+            $data = $this->userRepository->findOneBy(['id' => $id]);
+        } catch (\Exception $e) {
+            throw new DatabaseErrorException();
+        }
+
+        return $data;
+    }
 }
