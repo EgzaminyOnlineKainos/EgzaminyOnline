@@ -46,4 +46,15 @@ class ExamUpdater
 
         $this->examRepository->update($exam);
     }
+
+    public function updateExam(Exam $exam, $name, $dateRange)
+    {
+        $exam->setName($name);
+        $startDate = new \DateTime(substr($dateRange, 0, 15));
+        $endDate = new \DateTime(substr($dateRange, 18));
+        $exam->setStartDate($startDate);
+        $exam->setEndDate($endDate);
+
+        $this->examRepository->update($exam);
+    }
 }

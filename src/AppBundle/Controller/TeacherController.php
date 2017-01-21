@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Exam;
 use AppBundle\Entity\Question;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -53,6 +54,7 @@ class TeacherController extends Controller
         $userProvider = $this->get('app.user.provider');
         $questionProvider = $this->get('app.question.provider');
         $examUpdater = $this->get('app.exam.updater');
+        $examRepo = $this->get('app.repository.exam');
 
         if ($request->getMethod() === "POST") {
             switch ($request->get('action')) {
@@ -74,7 +76,15 @@ class TeacherController extends Controller
                     $this->addFlash("success", "Exam updated");
                     break;
                 case "updateExam":
-
+                    /** @var Exam $exam */
+                    try {
+                        $exam = $examProvider->getOne($exam_id);
+                        $examUpdater->updateExam($exam, $request->get('name'), $request->get('dateRange'));
+                        $examRepo->update($exam);
+                        $this->addFlash("success", "Exam updated");
+                    } catch (\Exception $e) {
+                        $this->addFlash("error", $e->getMessage());
+                    }
                     break;
             }
         }
