@@ -63,6 +63,7 @@ class TeacherController extends Controller
                         $examUpdater->updateStudents($examProvider->getOne($exam_id), $request->get('students') ?? []);
                     } catch (\Exception $e) {
                         $this->addFlash("error", $e->getMessage());
+                        break;
                     }
                     $this->addFlash("success", "Exam updated");
                     break;
@@ -72,6 +73,7 @@ class TeacherController extends Controller
                             $request->get('questions') ?? []);
                     } catch (\Exception $e) {
                         $this->addFlash("error", $e->getMessage());
+                        break;
                     }
                     $this->addFlash("success", "Exam updated");
                     break;
@@ -84,6 +86,7 @@ class TeacherController extends Controller
                         $this->addFlash("success", "Exam updated");
                     } catch (\Exception $e) {
                         $this->addFlash("error", $e->getMessage());
+                        break;
                     }
                     break;
             }

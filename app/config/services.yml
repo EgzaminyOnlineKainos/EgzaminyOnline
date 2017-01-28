@@ -22,6 +22,12 @@ services:
         arguments:
             - 'AppBundle\Entity\User'
 
+    app.repository.score:
+            class: AppBundle\Repository\ScoreRepository
+            factory: ['@doctrine.orm.default_entity_manager', getRepository]
+            arguments:
+                - 'AppBundle\Entity\Score'
+
     app.exam.provider:
         class: AppBundle\Service\Exam\ExamProvider
         arguments:
@@ -74,4 +80,20 @@ services:
         class: AppBundle\Service\User\UserRemover
         arguments:
             - '@app.repository.user'
+
+    app.score_provider:
+        class: AppBundle\Service\Exam\ScoreProvider
+        arguments:
+            - '@app.repository.score'
+
+    app.score_creator:
+        class: AppBundle\Service\Exam\ScoreCreator
+        arguments:
+            - '@app.repository.score'
+
+    app.score_handler:
+        class: AppBundle\Service\Exam\ScoreHandler
+        arguments:
+            - '@app.score_creator'
+            - '@app.score_provider'
 

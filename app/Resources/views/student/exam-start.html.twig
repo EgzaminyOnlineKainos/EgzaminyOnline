@@ -1,0 +1,83 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}Exams{% endblock %}
+
+{% block body %}
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Exam - {{ exam.name }}
+            <small>Student panel</small>
+        </h1>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        {% for flashMessage in app.session.flashbag.get('success') %}
+            <div class="flash-notice">
+                <div class="alert alert-success alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    {{ flashMessage | trans }}
+                </div>
+            </div>
+        {% endfor %}
+        {% for flashMessage in app.session.flashbag.get('error') %}
+            <div class="flash-notice">
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    {{ flashMessage | trans }}
+                </div>
+            </div>
+        {% endfor %}
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <table id="exams" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Question</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% set qNo = 1 %}
+                        {% for q in exam.questions %}
+                            <tr>
+                                <td>Question{{ qNo }}{% set qNo = qNo + 1 %}</td>
+                                <td>{% if q.studentAnswerStatus %}Already answered{% else %}Not answered{% endif %}</td>
+                                <td>
+                                    <a class="btn btn-primary {% if q.studentAnswerStatus %}disabled{% endif %}"
+                                       href="{{ url('student:exam:question', {id: exam.id, q_id: q.id}) }}">Answer</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </section>
+    <!-- /.content -->
+
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('plugins/datatables/dataTables/css/jquery.dataTables.min.css') }}" type="text/css"
+          rel="stylesheet" />
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('plugins/datatables/dataTables/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('plugins/daterangepicker/moment.min.js') }}"></script>
+    <script src="{{ asset('plugins/daterangepicker/daterangepicker.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            $('#exams').DataTable({
+                "aaSortingFixed": [[1, 'asc'], [0, 'asc']]
+            });
+        });
+
+    </script>
+{% endblock %}

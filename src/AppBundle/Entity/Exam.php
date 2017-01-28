@@ -2,7 +2,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Mapping  as ORM;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Exam
@@ -42,7 +42,7 @@ class Exam implements \JsonSerializable
      * @ORM\ManyToMany(targetEntity="Question")
      * @ORM\JoinTable(name="exams_questions",
      *      joinColumns={@ORM\JoinColumn(name="examId", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="questionId", referencedColumnName="id", unique=true)}
+     *      inverseJoinColumns={@ORM\JoinColumn(name="questionId", referencedColumnName="id")}
      *      )
      */
     private $questions;
@@ -53,7 +53,7 @@ class Exam implements \JsonSerializable
      * @ORM\ManyToMany(targetEntity="User")
      * @ORM\JoinTable(name="exams_students",
      *      joinColumns={@ORM\JoinColumn(name="examId", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="questionId", referencedColumnName="id", unique=true)}
+     *      inverseJoinColumns={@ORM\JoinColumn(name="questionId", referencedColumnName="id")}
      *      )
      */
     private $students;
@@ -139,7 +139,7 @@ class Exam implements \JsonSerializable
      */
     public function getQuestions()
     {
-        return $this->questions;
+        return $this->questions->toArray();
     }
 
     /**
@@ -217,5 +217,10 @@ class Exam implements \JsonSerializable
             'endDate' => $this->getEndDate()->format('Y-m-d H:i'),
             'owner' => $this->getOwner()
         ];
+    }
+
+    function isStudentTakesPartIn(User $user)
+    {
+        return $this->students->contains($user);
     }
 }
