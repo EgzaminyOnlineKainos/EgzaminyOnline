@@ -3,19 +3,21 @@ namespace AppBundle\Repository;
 
 use AppBundle\Component\Exception\DatabaseErrorException;
 use AppBundle\Entity\Exam;
+use AppBundle\Entity\Question;
+use AppBundle\Entity\Score;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 use Exception;
 
-class ExamRepository extends EntityRepository
+class ScoreRepository extends EntityRepository
 {
-    public function create(Exam $exam)
+    public function create(Score $question)
     {
         $em = $this->getEntityManager();
 
         $em->beginTransaction();
         try {
-            $em->persist($exam);
+            $em->persist($question);
             $em->flush();
             $em->commit();
         } catch (Exception $e) {
@@ -24,13 +26,12 @@ class ExamRepository extends EntityRepository
         }
     }
 
-    public function update(Exam $exam)
+    public function update(Score $question)
     {
         $em = $this->getEntityManager();
 
         $em->beginTransaction();
         try {
-            $em->merge($exam);
             $em->flush();
             $em->commit();
         } catch (Exception $e) {
@@ -39,13 +40,13 @@ class ExamRepository extends EntityRepository
         }
     }
 
-    public function remove(Exam $exam)
+    public function remove(Score $question)
     {
         $em = $this->getEntityManager();
 
         $em->beginTransaction();
         try {
-            $em->remove($exam);
+            $em->remove($question);
             $em->flush();
             $em->commit();
         } catch (Exception $e) {
@@ -54,22 +55,8 @@ class ExamRepository extends EntityRepository
         }
     }
 
-    public function countAll()
+    public function getStudentScoreForGivenQuestion(User $user, Question $question, Exam $exam)
     {
-        $data = $this->createQueryBuilder('u')
-            ->select('count(u.id)')
-            ->getQuery()
-            ->getSingleScalarResult();
-
-        return $data;
-    }
-
-    public function getExamsStudentTakesPartIn(User $user)
-    {
-        $q =$this->createQueryBuilder('ex')
-            ->where(':student MEMBER OF ex.students')
-            ->setParameters(['student' => $user]);
-
-        return $q->getQuery()->getResult();
+        return $this->findOneBy(['student' => $user, 'question' => $question, 'exam' => $exam]);
     }
 }

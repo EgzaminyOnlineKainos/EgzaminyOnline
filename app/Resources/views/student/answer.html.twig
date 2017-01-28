@@ -1,0 +1,88 @@
+{% extends '::base.html.twig' %}
+{# @var question \AppBundle\Entity\Question #}
+{% block title %}Exams{% endblock %}
+
+{% block body %}
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Exam - {{ exam.name }}
+            <small>Answering question</small>
+        </h1>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        {% for flashMessage in app.session.flashbag.get('success') %}
+            <div class="flash-notice">
+                <div class="alert alert-success alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    {{ flashMessage | trans }}
+                </div>
+            </div>
+        {% endfor %}
+        {% for flashMessage in app.session.flashbag.get('error') %}
+            <div class="flash-notice">
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    {{ flashMessage | trans }}
+                </div>
+            </div>
+        {% endfor %}
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h1>Question: {{ question.question }}</h1>
+                <form method="post">
+                    <div class="form-group">
+                        {% for q in answers %}
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="ans" value="{{ q }}">
+                                    {{ q }}
+                                </label>
+                            </div>
+                        {% endfor %}
+
+                    </div>
+                    <hr style="width: 100%; color: black; height: 1px; background-color: #696969;" />
+                    <p style="color:red; font-weight: 600;">Remember : This is the final answer. You will not be able to
+                        answer for that question again after submitting your choice</p>
+                    <div class="form-group">
+                        <div class="pull-left">
+                            <button type="submit" class="btn btn-warning">Submit Answer</button>
+                        </div>
+                        <div class="pull-right">
+                            <a href="{{ url('student:exam:start', {id: exam.id}) }}" class="btn btn-primary">Postpone
+                                answer</a>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+    </section>
+    <!-- /.content -->
+
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('plugins/datatables/dataTables/css/jquery.dataTables.min.css') }}" type="text/css"
+          rel="stylesheet" />
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('plugins/datatables/dataTables/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('plugins/daterangepicker/moment.min.js') }}"></script>
+    <script src="{{ asset('plugins/daterangepicker/daterangepicker.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            $('#exams').DataTable({
+                "aaSortingFixed": [[1, 'asc'], [0, 'asc']]
+            });
+        });
+
+    </script>
+{% endblock %}

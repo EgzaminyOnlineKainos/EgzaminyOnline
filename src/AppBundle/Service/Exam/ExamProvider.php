@@ -2,6 +2,7 @@
 namespace AppBundle\Service\Exam;
 
 use AppBundle\Component\Exception\DatabaseErrorException;
+use AppBundle\Entity\Exam;
 use AppBundle\Entity\User;
 use AppBundle\Repository\ExamRepository;
 
@@ -14,6 +15,12 @@ class ExamProvider
         $this->examRepository = $examRepository;
     }
 
+    /**
+     * @param $exam_id
+     *
+     * @return null|Exam
+     * @throws DatabaseErrorException
+     */
     public function getOne($exam_id)
     {
         try {
@@ -40,6 +47,17 @@ class ExamProvider
     {
         try {
             $data = $this->examRepository->countAll();
+        } catch (\Exception $e) {
+            throw new DatabaseErrorException();
+        }
+
+        return $data;
+    }
+
+    public function getExamsStudentTakesPartIn(User $student)
+    {
+        try {
+            $data = $this->examRepository->getExamsStudentTakesPartIn($student);
         } catch (\Exception $e) {
             throw new DatabaseErrorException();
         }
