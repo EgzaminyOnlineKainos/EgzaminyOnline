@@ -46,4 +46,15 @@ class ExamProvider
 
         return $data;
     }
+
+    public function getExamsStudentTakesPartIn(User $student)
+    {
+        try {
+            $data = $this->examRepository->getExamsStudentTakesPartIn($student);
+        } catch (\Exception $e) {
+            throw new DatabaseErrorException();
+        }
+
+        return $data;
+    }
 }

@@ -3,6 +3,7 @@ namespace AppBundle\Repository;
 
 use AppBundle\Component\Exception\DatabaseErrorException;
 use AppBundle\Entity\Exam;
+use AppBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 use Exception;
 
@@ -59,6 +60,16 @@ class ExamRepository extends EntityRepository
             ->select('count(u.id)')
             ->getQuery()
             ->getSingleScalarResult();
+
         return $data;
+    }
+
+    public function getExamsStudentTakesPartIn(User $user)
+    {
+        $q =$this->createQueryBuilder('ex')
+            ->where(':student MEMBER OF ex.students')
+            ->setParameters(['student' => $user]);
+
+        return $q->getQuery()->getResult();
     }
 }
