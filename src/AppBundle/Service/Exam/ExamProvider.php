@@ -2,6 +2,7 @@
 namespace AppBundle\Service\Exam;
 
 use AppBundle\Component\Exception\DatabaseErrorException;
+use AppBundle\Entity\Exam;
 use AppBundle\Entity\User;
 use AppBundle\Repository\ExamRepository;
 
@@ -14,6 +15,12 @@ class ExamProvider
         $this->examRepository = $examRepository;
     }
 
+    /**
+     * @param $exam_id
+     *
+     * @return null|Exam
+     * @throws DatabaseErrorException
+     */
     public function getOne($exam_id)
     {
         try {

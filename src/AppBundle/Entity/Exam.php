@@ -2,7 +2,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Mapping  as ORM;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Exam
@@ -217,5 +217,10 @@ class Exam implements \JsonSerializable
             'endDate' => $this->getEndDate()->format('Y-m-d H:i'),
             'owner' => $this->getOwner()
         ];
+    }
+
+    function isStudentTakesPartIn(User $user)
+    {
+        return $this->students->contains($user);
     }
 }
