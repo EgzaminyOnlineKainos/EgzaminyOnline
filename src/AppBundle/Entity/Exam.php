@@ -42,7 +42,7 @@ class Exam implements \JsonSerializable
      * @ORM\ManyToMany(targetEntity="Question")
      * @ORM\JoinTable(name="exams_questions",
      *      joinColumns={@ORM\JoinColumn(name="examId", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="questionId", referencedColumnName="id", unique=true)}
+     *      inverseJoinColumns={@ORM\JoinColumn(name="questionId", referencedColumnName="id")}
      *      )
      */
     private $questions;
@@ -53,7 +53,7 @@ class Exam implements \JsonSerializable
      * @ORM\ManyToMany(targetEntity="User")
      * @ORM\JoinTable(name="exams_students",
      *      joinColumns={@ORM\JoinColumn(name="examId", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="questionId", referencedColumnName="id", unique=true)}
+     *      inverseJoinColumns={@ORM\JoinColumn(name="questionId", referencedColumnName="id")}
      *      )
      */
     private $students;

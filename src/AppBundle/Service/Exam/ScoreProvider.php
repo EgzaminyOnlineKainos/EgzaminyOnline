@@ -49,5 +49,22 @@ class ScoreProvider
         return $this->scoreRepo->getStudentScoreForGivenQuestion($user, $question, $exam);
     }
 
+    public function getAverageStudentScoreForFinishedExams(User $user)
+    {
+        /** @var Score[] $scores */
+        $scores = $this->scoreRepo->findBy(['student' => $user]);
+        $sum    = 0;
+        foreach ($scores as $key => $score) {
+            if ($score->getExam()->getEndDate()->getTimestamp() > (new \DateTime())->getTimestamp()) {
+                unset($scores[$key]);
+                continue;
+            }
+            $sum = $score->isGood() ? $sum + 1 : $sum;
+        }
+
+
+        return $scores ? ($sum / count($scores)) * 100 : 0;
+    }
+
 }
 

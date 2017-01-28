@@ -18,7 +18,16 @@ class StudentController extends Controller
      */
     public function indexAction()
     {
-        return $this->render(':student:index.html.twig');
+        $examProvider  = $this->get('app.exam.provider');
+        $scoreProvider = $this->get('app.score_provider');
+        $user          = $this->getUser();
+        $exams         = $examProvider->getExamsStudentTakesPartIn($user);
+        $avg           = $scoreProvider->getAverageStudentScoreForFinishedExams($user);
+
+        return $this->render(':student:index.html.twig', [
+            'numOfExams'  => count($exams),
+            'avgOfScores' => $avg,
+        ]);
     }
 
     /**
