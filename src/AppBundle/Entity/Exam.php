@@ -139,7 +139,7 @@ class Exam implements \JsonSerializable
      */
     public function getQuestions()
     {
-        return $this->questions;
+        return $this->questions->toArray();
     }
 
     /**

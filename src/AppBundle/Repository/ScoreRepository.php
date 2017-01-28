@@ -57,6 +57,6 @@ class ScoreRepository extends EntityRepository
 
     public function getStudentScoreForGivenQuestion(User $user, Question $question, Exam $exam)
     {
-        return $this->findOneBy(['user' => $user, 'question' => $question, 'exam' => $exam]);
+        return $this->findOneBy(['student' => $user, 'question' => $question, 'exam' => $exam]);
     }
 }

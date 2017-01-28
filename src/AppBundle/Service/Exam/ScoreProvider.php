@@ -46,7 +46,7 @@ class ScoreProvider
 
     public function getStudentScoreForGivenQuestion(User $user, Question $question, Exam $exam)
     {
-        $this->scoreRepo->getStudentScoreForGivenQuestion($user, $question, $exam);
+        return $this->scoreRepo->getStudentScoreForGivenQuestion($user, $question, $exam);
     }
 
 }

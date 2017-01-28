@@ -42,6 +42,7 @@ class StudentController extends Controller
     public function startExamAction($id)
     {
         $examsProvider = $this->get('app.exam.provider');
+        $scoreHandler = $this->get('app.score_handler');
         $exam          = $examsProvider->getOne($id);
         $user          = $this->getUser();
 
@@ -50,8 +51,12 @@ class StudentController extends Controller
             return $check;
         }
 
+        $questions = $exam->getQuestions();
+        $scoreHandler->insertStatusToQuestionArray($questions, $user, $exam);
+
         return $this->render(':student:exam-start.html.twig', [
-            'exam' => $exam,
+            'exam'      => $exam,
+            'questions' => $questions,
         ]);
     }
 
@@ -64,10 +69,6 @@ class StudentController extends Controller
      */
     public function answerQuestionAction(Request $request, $id, $q_id)
     {
-        if (!$request->isXmlHttpRequest()) {
-            return new JsonResponse(['error' => 'Only ajax requests allowed', 'code' => 400], 400);
-        }
-
         $examsProvider    = $this->get('app.exam.provider');
         $questionProvider = $this->get('app.question.provider');
         $scoreProvider    = $this->get('app.score_provider');
@@ -94,10 +95,27 @@ class StudentController extends Controller
 
             return $this->redirectToRoute('student:exam:start', ['id' => $id]);
         } else {
-            $this->get('app.score_handler')->handleAnswering($exam, $question, $user, $request->request->all());
-            $this->addFlash('success', 'Answer saved');
+            if ($request->getMethod() == "POST") {
+                $this->get('app.score_handler')->handleAnswering($exam, $question, $user, $request->request->all());
+                $this->addFlash('success', 'Answer saved');
 
-            return $this->redirectToRoute('student:exam:start', ['id' => $id]);
+                return $this->redirectToRoute('student:exam:start', ['id' => $id]);
+            }
+            $ans = [
+                $question->getCorrectAnswer(),
+                $question->getIncorrectAnswerOne(),
+                $question->getIncorrectAnswerTwo(),
+                $question->getIncorrectAnswerThree(),
+            ];
+
+            shuffle($ans);
+
+            return $this->render('student/answer.html.twig', [
+                'exam'     => $exam,
+                'question' => $question,
+                'answers'  => $ans,
+            ]);
+
         }
     }
 

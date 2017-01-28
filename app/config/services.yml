@@ -95,4 +95,5 @@ services:
         class: AppBundle\Service\Exam\ScoreHandler
         arguments:
             - '@app.score_creator'
+            - '@app.score_provider'
 

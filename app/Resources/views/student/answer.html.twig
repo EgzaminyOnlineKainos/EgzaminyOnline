@@ -1,5 +1,5 @@
 {% extends '::base.html.twig' %}
-
+{# @var question \AppBundle\Entity\Question #}
 {% block title %}Exams{% endblock %}
 
 {% block body %}
@@ -7,7 +7,7 @@
     <section class="content-header">
         <h1>
             Exam - {{ exam.name }}
-            <small>Student panel</small>
+            <small>Answering question</small>
         </h1>
     </section>
 
@@ -31,28 +31,33 @@
         {% endfor %}
         <div class="panel panel-default">
             <div class="panel-body">
-                <table id="exams" class="display" cellspacing="0" width="100%">
-                    <thead>
-                        <tr>
-                            <th>Question</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% set qNo = 1 %}
-                        {% for q in exam.questions %}
-                            <tr>
-                                <td>Question{{ qNo }}{% set qNo = qNo + 1 %}</td>
-                                <td>{% if q.studentAnswerStatus %}Already answered{% else %}Not answered{% endif %}</td>
-                                <td>
-                                    <a class="btn btn-primary {% if q.studentAnswerStatus %}disabled{% endif %}"
-                                       href="{{ url('student:exam:question', {id: exam.id, q_id: q.id}) }}">Answer</a>
-                                </td>
-                            </tr>
+                <h1>Question: {{ question.question }}</h1>
+                <form method="post">
+                    <div class="form-group">
+                        {% for q in answers %}
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="ans" value="{{ q }}">
+                                    {{ q }}
+                                </label>
+                            </div>
                         {% endfor %}
-                    </tbody>
-                </table>
+
+                    </div>
+                    <hr style="width: 100%; color: black; height: 1px; background-color: #696969;" />
+                    <p style="color:red; font-weight: 600;">Remember : This is the final answer. You will not be able to
+                        answer for that question again after submitting your choice</p>
+                    <div class="form-group">
+                        <div class="pull-left">
+                            <button type="submit" class="btn btn-warning">Submit Answer</button>
+                        </div>
+                        <div class="pull-right">
+                            <a href="{{ url('student:exam:start', {id: exam.id}) }}" class="btn btn-primary">Postpone
+                                answer</a>
+                        </div>
+                    </div>
+                </form>
+
             </div>
         </div>
 
