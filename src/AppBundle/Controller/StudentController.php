@@ -2,9 +2,12 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Exam;
+use AppBundle\Entity\Question;
+use AppBundle\Entity\Score;
 use AppBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -56,21 +59,46 @@ class StudentController extends Controller
      * @param Request $request
      * @param         $id
      * @Route("/student/exams/{id}/q/{q_id}", name="student:exam:question")
+     *
+     * @return null|RedirectResponse|JsonResponse
      */
-    public function questionAction(Request $request, $id)
+    public function answerQuestionAction(Request $request, $id, $q_id)
     {
-        $examsProvider = $this->get('app.exam.provider');
-        $exam          = $examsProvider->getOne($id);
-        $user          = $this->getUser();
+        if (!$request->isXmlHttpRequest()) {
+            return new JsonResponse(['error' => 'Only ajax requests allowed', 'code' => 400], 400);
+        }
+
+        $examsProvider    = $this->get('app.exam.provider');
+        $questionProvider = $this->get('app.question.provider');
+        $scoreProvider    = $this->get('app.score_provider');
+        $exam             = $examsProvider->getOne($id);
+        $user             = $this->getUser();
 
         $check = $this->checkStudentPermissionsToExam($exam, $user);
         if ($check instanceof RedirectResponse) {
             return $check;
         }
 
-        return $this->render(':student:exam-start.html.twig', [
-            'exam' => $exam,
-        ]);
+        $question = $questionProvider->getOne($q_id);
+
+        if (!$question instanceof Question) {
+            $this->addFlash('error', 'Exam question cannot be found');
+
+            return $this->redirectToRoute('student:exam:start', ['id' => $id]);
+        }
+
+        $score = $scoreProvider->getStudentScoreForGivenQuestion($user, $question, $exam);
+
+        if ($score instanceof Score) {
+            $this->addFlash('error', 'You have already answered this question!');
+
+            return $this->redirectToRoute('student:exam:start', ['id' => $id]);
+        } else {
+            $this->get('app.score_handler')->handleAnswering($exam, $question, $user, $request->request->all());
+            $this->addFlash('success', 'Answer saved');
+
+            return $this->redirectToRoute('student:exam:start', ['id' => $id]);
+        }
     }
 
     private function checkStudentPermissionsToExam(Exam $exam, User $user)

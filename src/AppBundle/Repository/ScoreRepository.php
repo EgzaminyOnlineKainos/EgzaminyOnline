@@ -2,7 +2,10 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Component\Exception\DatabaseErrorException;
+use AppBundle\Entity\Exam;
+use AppBundle\Entity\Question;
 use AppBundle\Entity\Score;
+use AppBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 use Exception;
 
@@ -50,5 +53,10 @@ class ScoreRepository extends EntityRepository
             $em->rollback();
             throw new DatabaseErrorException($e);
         }
+    }
+
+    public function getStudentScoreForGivenQuestion(User $user, Question $question, Exam $exam)
+    {
+        return $this->findOneBy(['user' => $user, 'question' => $question, 'exam' => $exam]);
     }
 }

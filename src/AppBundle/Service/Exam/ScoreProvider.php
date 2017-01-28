@@ -2,6 +2,7 @@
 namespace AppBundle\Service\Exam;
 
 use AppBundle\Entity\Exam;
+use AppBundle\Entity\Question;
 use AppBundle\Entity\Score;
 use AppBundle\Entity\User;
 use AppBundle\Repository\ScoreRepository;
@@ -41,6 +42,11 @@ class ScoreProvider
     public function getOverallUserScoreInExam(User $user, Exam $exam): int
     {
         throw new NotImplementedException("not yet implemented");
+    }
+
+    public function getStudentScoreForGivenQuestion(User $user, Question $question, Exam $exam)
+    {
+        $this->scoreRepo->getStudentScoreForGivenQuestion($user, $question, $exam);
     }
 
 }
