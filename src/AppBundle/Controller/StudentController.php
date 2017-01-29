@@ -128,6 +128,24 @@ class StudentController extends Controller
         }
     }
 
+    /** @Route("/student/exam/results", name="student:exam:results") */
+    public function checkExamResultsAction(Request $request)
+    {
+        $examProvider = $this->get('app.exam.provider');
+        $scoreProvider = $this->get('app.score_provider');
+
+        /** @var Exam[] $exams */
+        $exams = $examProvider->getFinishedExamsStudentTakesPartIn($this->getUser());
+        foreach ($exams as $exam) {
+            $exam->questionCount = count($exam->getQuestions());
+            $exam->questionsCorrect = $scoreProvider->getOverallUserScoreInExam($this->getUser(), $exam);
+        }
+
+        return $this->render('student/results.html.twig', [
+            'exams' => $exams
+        ]);
+    }
+
     private function checkStudentPermissionsToExam($exam, User $user)
     {
         if (!$exam instanceof Exam) {
