@@ -64,6 +64,11 @@ class ExamRepository extends EntityRepository
         return $data;
     }
 
+    /**
+     * @param User $user
+     *
+     * @return Exam[]
+     */
     public function getExamsStudentTakesPartIn(User $user)
     {
         $q =$this->createQueryBuilder('ex')

@@ -37,7 +37,7 @@ class StudentController extends Controller
     {
         $examsProvider = $this->get('app.exam.provider');
         $user          = $this->getUser();
-        $exams         = $examsProvider->getExamsStudentTakesPartIn($user);
+        $exams         = $examsProvider->getNotFinishedExamsStudentTakesPartIn($user);
 
         return $this->render(':student:exams.html.twig', [
             'exams' => $exams,
@@ -51,7 +51,7 @@ class StudentController extends Controller
     public function startExamAction($id)
     {
         $examsProvider = $this->get('app.exam.provider');
-        $scoreHandler = $this->get('app.score_handler');
+        $scoreHandler  = $this->get('app.score_handler');
         $exam          = $examsProvider->getOne($id);
         $user          = $this->getUser();
 
@@ -128,13 +128,20 @@ class StudentController extends Controller
         }
     }
 
-    private function checkStudentPermissionsToExam(Exam $exam, User $user)
+    private function checkStudentPermissionsToExam($exam, User $user)
     {
         if (!$exam instanceof Exam) {
             $this->addFlash('error', 'This exam does not exist');
 
             return $this->redirectToRoute('student:exams');
         }
+
+        if ($exam->getEndDate()->getTimestamp() < (new \DateTime())->getTimestamp()) {
+            $this->addFlash('error', 'This exam has already been finished');
+
+            return $this->redirectToRoute('student:exams');
+        }
+
         if (!$exam->isStudentTakesPartIn($user)) {
             $this->addFlash('error', 'You are not allowed to start that exam!');
 
