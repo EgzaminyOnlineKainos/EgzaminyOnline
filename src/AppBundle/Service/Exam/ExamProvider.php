@@ -82,4 +82,21 @@ class ExamProvider
 
         return $data;
     }
+
+    public function getFinishedExamsStudentTakesPartIn(User $student)
+    {
+        try {
+            $data = $this->examRepository->getExamsStudentTakesPartIn($student);
+            $exams = [];
+            foreach ($data as $exam) {
+                if($exam->getEndDate()->getTimestamp() < (new \DateTime())->getTimestamp()) {
+                    $exams[] = $exam;
+                }
+            }
+        } catch (\Exception $e) {
+            throw new DatabaseErrorException();
+        }
+
+        return $exams;
+    }
 }

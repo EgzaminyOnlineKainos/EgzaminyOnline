@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Service\Exam;
 
+use AppBundle\Component\Exception\DatabaseErrorException;
 use AppBundle\Entity\Exam;
 use AppBundle\Entity\Question;
 use AppBundle\Entity\Score;
@@ -30,7 +31,16 @@ class ScoreProvider
      */
     public function getUserScoresInExam(User $user, Exam $exam): array
     {
-        throw new NotImplementedException("not yet implemented");
+        try {
+            $data = $this->scoreRepo->findBy([
+                'student' => $user,
+                'exam' => $exam
+            ]);
+        } catch (\Exception $e) {
+            throw new DatabaseErrorException();
+        }
+
+        return $data;
     }
 
     /**
@@ -39,9 +49,18 @@ class ScoreProvider
      *
      * @return int overall score
      */
-    public function getOverallUserScoreInExam(User $user, Exam $exam): int
+    public function getOverallUserScoreInExam(User $user, Exam $exam) : int
     {
-        throw new NotImplementedException("not yet implemented");
+        $scores = $this->getUserScoresInExam($user, $exam);
+        $count = 0;
+
+        foreach ($scores as $score) {
+            if ($score->isGood()) {
+                $count++;
+            }
+        }
+
+        return $count;
     }
 
     public function getStudentScoreForGivenQuestion(User $user, Question $question, Exam $exam)

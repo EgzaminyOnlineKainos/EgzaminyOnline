@@ -93,6 +93,11 @@
                                     <i class="fa fa-graduation-cap"></i><span> Exams</span>
                                 </a>
                             </li>
+                            <li>
+                                <a href="{{ url('student:exam:results') }}">
+                                    <i class="fa fa-trophy"></i><span> Exam results</span>
+                                </a>
+                            </li>
                         {% endif %}
                         {% if is_granted('ROLE_ADMIN') %}
                             <li class="header">Teacher</li>
