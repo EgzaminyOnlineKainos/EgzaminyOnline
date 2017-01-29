@@ -1,0 +1,72 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}Exams{% endblock %}
+
+{% block body %}
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Exam results
+            <small>Student panel</small>
+        </h1>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        {% for flashMessage in app.session.flashbag.get('success') %}
+            <div class="flash-notice">
+                <div class="alert alert-success alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    {{ flashMessage | trans }}
+                </div>
+            </div>
+        {% endfor %}
+        {% for flashMessage in app.session.flashbag.get('error') %}
+            <div class="flash-notice">
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    {{ flashMessage | trans }}
+                </div>
+            </div>
+        {% endfor %}
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <table id="exams" class="display" cellspacing="0" width="100%">
+                    <thead>
+                    <tr>
+                        <th>Exam</th>
+                        <th>Start date</th>
+                        <th>End date</th>
+                        <th>Result</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for exam in exams %}
+                        <tr>
+                            <td>{{ exam.name }}</td>
+                            <td>{{ exam.startDate.format('Y-m-d H:i') }}</td>
+                            <td>{{ exam.endDate.format('Y-m-d H:i') }}</td>
+                            <td>{{ exam.questionsCorrect }}/{{ exam.questionCount }} ({{ exam.questionsCorrect / exam.questionCount * 100 }}%)</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </section>
+    <!-- /.content -->
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('plugins/datatables/dataTables/css/jquery.dataTables.min.css') }}" type="text/css" rel="stylesheet"/>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('plugins/datatables/dataTables/js/jquery.dataTables.min.js') }}"></script>
+    <script>
+        $('#exams').DataTable();
+    </script>
+{% endblock %}

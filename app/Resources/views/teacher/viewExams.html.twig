@@ -50,8 +50,12 @@
                         <td>{{ exam.startDate.format('Y-m-d H:i') }}</td>
                         <td>{{ exam.endDate.format('Y-m-d H:i') }}</td>
                         <td>
-                            <a href="{{ url('teacher:exam:configure',{'exam_id': exam.id}) }}" class="btn btn-info">Manage</a>
-                            <button class="btn btn-danger" onclick="submitRemoveForm()">Remove</button>
+                            {% if date(exam.endDate) < date() %}
+                                <a href="{{ url('teacher:exam:results',{'exam_id': exam.id}) }}" class="btn btn-info">Results</a>
+                            {% else %}
+                                <a href="{{ url('teacher:exam:configure',{'exam_id': exam.id}) }}" class="btn btn-info">Manage</a>
+                                <button class="btn btn-danger" onclick="submitRemoveForm()">Remove</button>
+                            {% endif %}
                             <form method="post" id="removeExamForm">
                                 <input type="hidden" name="action" value="removeExam">
                                 <input type="hidden" name="examId" value="{{ exam.id }}">
