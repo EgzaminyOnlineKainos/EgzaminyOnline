@@ -156,4 +156,25 @@ class TeacherController extends Controller
             'questions' => $questions,
         ]);
     }
+
+    /** @Route("/teacher/exam/{exam_id}/results", name="teacher:exam:results") */
+    public function examResultsAction(Request $request, $exam_id)
+    {
+        $examProvider = $this->get('app.exam.provider');
+        $scoreProvider = $this->get('app.score_provider');
+
+        $exam = $examProvider->getOne($exam_id);
+        $studentsInTheExam = $exam->getStudents();
+        $maxScore = count($exam->getQuestions());
+
+        foreach ($studentsInTheExam as $student) {
+            $score = $scoreProvider->getOverallUserScoreInExam($student, $exam);
+            $student->score = $score;
+            $student->maxScore = $maxScore;
+        }
+
+        return $this->render(':teacher:results.html.twig', [
+            'students' => $studentsInTheExam
+        ]);
+    }
 }
