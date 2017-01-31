@@ -46,7 +46,7 @@
                             <td>{{ exam.name }}</td>
                             <td>{{ exam.startDate.format('Y-m-d H:i') }}</td>
                             <td>{{ exam.endDate.format('Y-m-d H:i') }}</td>
-                            <td>{{ exam.questionsCorrect }}/{{ exam.questionCount }} ({{ exam.questionsCorrect / exam.questionCount * 100 }}%)</td>
+                            <td>{{ exam.questionsCorrect }}/{{ exam.questionCount }} ({{ (exam.questionsCorrect / exam.questionCount * 100) | number_format(2) }}%)</td>
                         </tr>
                     {% endfor %}
                     </tbody>
